@@ -1,0 +1,1382 @@
+\documentclass[12pt]{article}  
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{fancyhdr}
+ 
+\pagestyle{fancy}
+\fancyhf{}
+\cfoot{\thepage}
+ 
+
+\usepackage{graphicx}
+\usepackage{psfrag}
+\usepackage{amsmath, amssymb}
+\usepackage{mathptmx}
+\usepackage{ntheorem}
+\usepackage[nottoc,numbib]{tocbibind}
+\usepackage{hyperref}
+\usepackage{indentfirst}
+
+\usepackage{tocloft}
+\renewcommand{\cftsecfont}{\scshape}
+\renewcommand{\cftpartfont}{\scshape}
+\renewcommand{\cftsecpagefont }{\scshape}
+\renewcommand{\cftpartpagefont }{\scshape}
+\renewcommand\contentsname{\textsc{Table of Contents}}
+\renewcommand{\cftpartdotsep}{\cftnodots}
+\renewcommand{\cftpartpagefont}[2]{}
+\renewcommand{\cftpartafterpnum}{\cftparfillskip}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand\qedsymbol{QED}
+
+\textwidth=6.5in
+\textheight=8.9in
+\topmargin=-0.6in
+\oddsidemargin=0.1in
+\evensidemargin=0.1in
+\setlength{\parindent}{8mm}
+\parskip= 3pt
+\frenchspacing
+
+\usepackage{amsmath,etoolbox}
+
+\makeatletter
+\let\original@footnotemark\footnotemark
+\newcommand{\align@footnotemark}{%
+  \ifmeasuring@
+    \chardef\@tempfn\eq \value{footnote}%
+    \original@footnotemark
+    \setcounter{footnote}{\@tempfn}%
+  \else
+    \iffirstchoice@
+      \original@footnotemark
+    \fi
+  \fi}
+\pretocmd{\start@align}{\let\footnotemark\align@footnotemark}{}{}
+\makeatother
+
+
+
+\usepackage{setspace}
+\setstretch{1.05}
+
+\makeatletter
+\newsavebox\myboxA
+\newsavebox\myboxB
+\newlength\mylenA
+\newcommand*\xoverline[2][0.75]{%
+    \sbox{\myboxA}{$\m@th#2$}%
+    \setbox\myboxB\null% Phantom box
+    \ht\myboxB\eq \ht\myboxA%
+    \dp\myboxB\eq \dp\myboxA%
+    \wd\myboxB\eq #1\wd\myboxA% Scale phantom
+    \sbox\myboxB{$\m@th\overline{\copy\myboxB}$}%  Overlined phantom
+    \setlength\mylenA{\the\wd\myboxA}%   calc width diff
+    \addtolength\mylenA{-\the\wd\myboxB}%
+    \ifdim\wd\myboxB<\wd\myboxA%
+       \rlap{\hskip 0.5\mylenA\usebox\myboxB}{\usebox\myboxA}%
+    \else
+        \hskip -0.5\mylenA\rlap{\usebox\myboxA}{\hskip 0.5\mylenA\usebox\myboxB}%
+    \fi}
+\makeatother
+
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\I}{I}
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\su}{Sum}
+\newcommand{\bsigma}{{\bar{\sigma}}}
+\newcommand{\Av}{{\rm Av}}
+\newcommand{\var}{{\rm Var}}
+\newcommand{\A}{{\cal A}}
+\newcommand{\T}{{\cal T}}
+\newcommand{\N}{{\cal N}}
+\newcommand{\spe}{{\cal S}}
+\newcommand{\M}{{\cal M}}
+\newcommand{\FF}{{\cal F}}
+\newcommand{\DD}{{\cal D}}
+\newcommand{\PP}{{\cal P}}
+\newcommand{\EE}{{\cal E}}
+\newcommand{\RR}{{\cal R}}
+\newcommand{\LL}{{\cal L}}
+\newcommand{\II}{{\cal I}}
+\newcommand{\CC}{{\cal C}}
+\newcommand{\OO}{{\cal O}}
+\newcommand{\OC}{{{\cal O}({\cal C})}}
+\newcommand{\WW}{{\cal W}}
+\newcommand{\WC}{{{\cal W}({\cal C})}}
+\newcommand{\Ind}{{\hspace{0.3mm}{\rm I}\hspace{0.1mm}}}
+\newcommand{\eps}{{\varepsilon}}
+\newcommand{\ch}{{\mbox{\rm ch}}}
+\newcommand{\myth}{{\mbox{\rm th}}}
+\newcommand{\smsp}{\hspace{0.3mm}}
+\newcommand{\e}{\mathbb{E}}
+\newcommand{\q}{\mathbb{Q}}
+\newcommand{\p}{\mathbb{P}}
+\renewcommand{\t}[1]{\widetilde{#1}}
+\newcommand{\Reals}{\mathbb{R}}
+\newcommand{\Natural}{\mathbb{N}}
+\newcommand{\la}{\langle}
+\newcommand{\ra}{\rangle}
+\newcommand\qed{\hfill\hbox{\rlap{$\sqcap$}$\sqcup$}}
+\newcommand{\bs}{{\bar{\sigma}}}
+\newcommand{\sbar}{{\bar{s}}}
+\newcommand{\txi}{{\tilde{\xi}}}
+\newcommand{\tsigma}{{\tilde{\sigma}}}
+\newcommand{\E}{\mathcal{E}}
+\newcommand{\eq }{\: = \:}
+
+
+\newcommand{\bigO}[1]{\ensuremath{\mathop{}\mathopen{}\mathcal{O}\mathopen{}\left(#1\right)}}
+
+\newcommand\smallO[1]{
+  \mathchoice
+  {% \displaystyle
+    \mathop{}\mathopen{}{\scriptstyle\mathcal{O}}\mathopen{}\left(#1\right)
+  }
+  {% \textstyle
+    \mathop{}\mathopen{}{\scriptstyle\mathcal{O}}\mathopen{}\left(#1\right)
+  }
+  {% \scriptstyle
+    \mathop{}\mathopen{}{\scriptscriptstyle\mathcal{O}}\mathopen{}\left(#1\right)
+  }
+  {% \scriptscriptstyle  
+    \mathop{}\mathopen{}{o}\mathopen{}\left(#1\right)
+  }
+}
+
+\newtheorem{proposition}{Proposition}
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+
+
+\theoremstyle{nonumberplain}
+\newcommand\specialref{}
+\newtheorem{thmx}{Theorem \specialref}
+\newenvironment{thmref}[2][$'$]
+  {\renewcommand\specialref{\ref{VEC#2}#1}\thmx}
+  {\endthmx}
+
+\usepackage{titlesec}
+
+\setcounter{secnumdepth}{4}
+
+\titleformat{\paragraph}
+{\normalfont\normalsize\bfseries}{\theparagraph}{1em}{}
+\titlespacing*{\paragraph}
+{0pt}{3.25ex plus 1ex minus .2ex}{1.5ex plus .2ex}
+
+
+
+
+\begin{document}
+
+
+\title{\vspace{2cm}\textsc{stein's theorem, integration by parts and their applications}}
+\author
+{Rafael Aznar\\
+\\
+\normalsize{Department of Mathematics, University of Toronto}\\
+\\
+\normalsize{Email:  rafael.aznar@mail.utotonto.ca.}
+}
+
+\date{December 7, 2018}
+\maketitle
+
+\thispagestyle{empty}
+
+\clearpage
+
+\tableofcontents
+
+
+\pagebreak
+
+\section*{Introduction}
+
+Stein's method is a sophisticated approach for proving generalized central limit theorem, pioneered in the 1970s by Charles Stein, one of the leading statisticians of the 20th century. In the ordinary central limit theorem, if $X_{1}, X_{2}, \cdots, X_{n}$ are independent and identically distributed random variables, then the simple average of these random variables follows the standard normal distribution (Gaussian distribution)
+$$
+\frac{\sum_{i\eq 1}^{n}X_{i}-n\mu}{\sigma \sqrt{n}} \sim N(0,1),
+$$
+where $\mathbb{E}(X_{i})\eq \mu$, $\mathrm{Var}(X_{i})\eq \sigma^{2}$.
+
+The usual method to prove central limit theorem when random variables $X_{1}, X_{2}, \cdots, X_{n}$ are independent and identically distributed is to demonstrate convergence in distribution 
+$$
+\mathrm{P}(\frac{\sum_{i\eq 1}^{n}X_{i}-n\mu}{\sigma \sqrt{n}}\leq x)\longrightarrow \int_{-\infty}^{x} \frac{1}{\sqrt{2\pi}}e^{-\frac{t^{2}}{2}}dt, \mbox{as } n\rightarrow \infty,
+$$ 
+where the probability on the left-hand side can be computed by Fourier transform. The Fourier transform will decompose as a product because of independence. But what if these random variables $X_{i}^{,}$s are not independent? The technique mentioned above to prove central limit theorem is no longer useful. As a result, Stein came up with a new approach to prove that a random variable $W$ approximately follows Gaussian distribution by bounding the Wassertein distance between two random variables, $W$ and $Z$, where $Z$ follows standard normal distribution, even if the condition of independence is violated. In this paper, we will also study two applications of Stein's method: dependency graphs and exchangeable pairs. These applications provide us with bounds for the Wasserstein distance between our variables, which in turn allow us to approximate $W$ and $Z$. 
+
+\section{Fundamentals of Stein's Method}
+
+In this section, we will introduce an overview of Stein's method, including the motivation and significance of this approach, some basic idea of probability metrics, relationship between Kolmogorov-Smirnov distance and Wasserstein distance, as well as how Stein's idea derived from these nice properties in the probability metric.
+
+\subsection{Overview}
+
+Given a collection of samples, it will be easier for us to make statistical analysis if we can obtain the approximate distribution (for instance, normal distribution, Poisson distribution, exponential distribution, etc.) of the random variable that we are interested in. The ordinary central limit theorem can help us obtain the approximate distribution given that a sequence of such random variables are independent.
+
+However, in real applications, random variables are not always independent and identically distributed (independence is an indispensable condition for the ordinary central limit theorem). Thus we need a more sophisticated approach to obtain the limiting distribution, and Stein's method helps us to deal with such problems on the basis of the following idea:
+
+Let $W$ be a random variable and $Z$ be a standard Gaussian random variable, i.e. $Z\sim N(0,1)$. The density function of $Z$ is
+$$
+f(x)\eq \frac{1}{\sqrt{2\pi}}e^{-\frac{x^{2}}{2}},
+$$
+and the cumulative distribution function is
+$$
+\mathbb{P} (Z\leq{x})\eq \int_{\infty}^{x} \frac{1}{\sqrt{2\pi}}e^{-\frac{t^{2}}{2}} dt.
+$$
+
+To show that $W$ is approximately Gaussian distributed, we need to prove that $\mathbb{P} (W\leq{x}) \approx {\mathbb{P} (Z\leq{x})}$.\\
+
+One way to do this is to approximate the supremum norm in the difference of the cumulative distribution functions of $W, Z$. In other words, we wish to bound the quantity
+
+\begin{equation}
+\sup \limits_{x \in \mathbb{R}} \left| \p(W \le x) - \p(Z \le x) \right|
+\end{equation}
+
+Recall the fact:
+$$
+\mathbb{P} (W\leq{x})\eq \mathbb{E}\chi_{[\le x]}(W),
+$$
+where $\chi_E$ is the standard indicator function on the set $E$, namely
+\begin{align*}
+\chi_{[\le x]}(u)\eq &\left\{
+            \begin{array}{ll}
+             1 \quad &\mbox{if } u\leq x,\\
+             0 \quad &\mbox{if } u>x.   
+            \end{array}
+            \right.
+\end{align*}
+
+Stein's method consists of using the \textit{Wasserstein} and \textit{Kolmogorov} probability metrics in order to bound the difference $(1)$. To do this, we introduce the notion of a metric in a probability space. These metrics will give us a notion how close two random variables are in distribution. In particular, we will have a means of establishing when a random variable converges to a Gaussian distribution, and how fast.
+ 
+To do this, we now introduce the notion of a metric generated by a class of functions. In the next section, we will construct the metrics that we will need to study convergence to Gaussian distribution.
+
+\subsection{Probability metrics}
+
+\begin{definition}
+For two probability measures $\mu$ and $\nu$, the probability metric generated by a class $\mathcal{G}$ of test functions is:
+\begin{equation}
+d_{\mathcal{G}}(\mu, \nu)\eq \sup \limits_{g\in \mathcal{G}}  \Bigl|\int g(x)d\mu (x)-\int g(x)d\nu (x)\Bigr|
+\end{equation}
+\end{definition}
+
+\begin{definition}
+Let $W, Z$ be random variables with probability distribution functions $F_W(x)$ and $F_Z(x)$, respectively. We define the probability metric generated by a class $\mathcal{G}$ of test functions, between $W$ and $Z$ as the distance detailed in $(2)$, applied to $F_W(x)$ and $F_Z(x)$:
+\begin{equation}
+d_{\mathcal{G}}(W,Z)\eq \sup \limits_{g\in \mathcal{G}} \Bigl|\int g(x)dF_{W}(x)-\int g(x)dF_{Z}(x)\Bigr|\eq \sup \limits_{g\in \mathcal{G}} \Bigl|\mathbb{E}g(W)-\mathbb{E}g(Z)\Bigr|,
+\end{equation}
+\end{definition}
+
+We now define the Kolmogorov and Wasserstein metrics for random variables by using Def. 2 for appropriate choices of $\mathcal{G}$:
+\begin{definition}
+  We obtain the \textit{Kolmogorov} metric by setting our class of functions 
+  $\mathcal{G} \eq  \{ \chi_{[\le x]}: x \in \mathbb{R} \}$ so that
+  $$
+  \mathrm{Kolm}(W,Z):\eq \sup \limits_{x\in \mathbb{R}}\\ |\mathbb{P}(W\leq x)-\mathbb{P}(Z\leq x)|.
+  $$
+\end{definition}
+
+Notice that the Kolmogorov distance is precisely the quantity which we set out to bound. Next we introduce the Wasserstein metric, which gives us a more straightforward approach to show convergence in distribution.
+
+\begin{definition}
+  The \textit{Wasserstein} metric is obtained by setting $\mathcal{G}$ to be the class of all $1$-Lipschitz functions, to get
+  $$
+  \mathrm{Wass}(W,Z):\eq \sup \limits_{g\in \mathcal{G}} |\mathbb{E}g(W)-\mathbb{E}g(Z)|.
+  $$
+
+\end{definition}
+
+\begin{lemma}
+Let $W$, $Z$ be random variables, such that $Z$ has a density function bounded by some constant $C$. Then 
+$$
+\mathrm{Kolm}(W,Z)\leq  2\sqrt{C\mathrm{Wass}(W,Z)}
+$$
+\end{lemma}
+\textbf{Proof.} Fix $x \in \mathbb{R}, \: \epsilon>0$. Let $g_{x,\epsilon}^{1}(t)$ a linear transition for $\chi_{[\le x]}$ between $x$ and $x + \epsilon$. Explicitly:
+$$
+g_{x,\epsilon}^{1}(t)\eq \left\{
+            \begin{array}{ll}
+             1 \quad &\mbox{if } t\le x,\\
+             \frac{1}{\epsilon} (x  + \epsilon - t) \quad &\mbox{if } x \le t \le x + \epsilon \\
+             0 \quad &\mbox{if } t > x + \epsilon.  
+            \end{array}
+            \right.
+$$
+
+Notice that by construction, this function is $\frac{1}{\epsilon}-Lipschitz$, and therefore $\epsilon g_{x,\epsilon}^{1}(t)$ is \\
+$1-Lipschitz$. This means that 
+$$
+Wass(W, Z) \ge \left| \mathbb{E}(\epsilon g_{x, \epsilon}^{1}(W))-
+                        \mathbb{E}(\epsilon g_{x, \epsilon}^{1}(Z)) \right| \eq 
+        \epsilon \left| \mathbb{E}(g_{x, \epsilon} ^ {1}(W))-
+                        \mathbb{E}(g_{x, \epsilon} ^ {1}(Z)) \right|
+$$
+
+We now consider the difference $\mathbb{P}(W\leq x)-\mathbb{P}(Z\leq x)$.
+\begin{align*}
+\mathbb{P}(W \leq x) - \textbf{P}(Z \leq x) &\eq  
+\mathbb{P}(W \leq x) - \mathbb{E}[g_{x, \epsilon}^{1}(Z)] + \mathbb{E}[g_{x, \epsilon}^{1}(Z)]               -\mathbb{P}(Z\leq x)\\
+& \leq \mathbb{E}(g_{x,\epsilon}^{1}(W)] - \mathbb{E}[g_{x,\epsilon}^{1}(Z)] +                                \mathbb{E}[g_{x,\epsilon}^{1}(Z)] - \mathbb{P}(Z\leq x)\\
+& \leq \frac{1}{\epsilon} \mathrm{Wass}(W,Z) + \int [g_{x, \epsilon}^{1}(t) - \chi_{[\le x]}(t)]dF_Z(t)
+\end{align*}
+
+\pagebreak
+
+And now notice that $g_{x, \epsilon}^{1}$ and $\chi_{[\le x]}(t)$ agree outside of the interval $[x , x + \epsilon]$. So to estimate this last integral, we need only consider it within this bound. This together with the bound on $F_Z(t)$ gives us:
+\begin{align*}
+\int [g_{x, \epsilon}^{1}(t) - \chi_{[\le x]}(t)]dF_Z(t) &\le 
+\int_{x}^{x + \epsilon}C \frac{1}{\epsilon} (x  + \epsilon - t)dt \\
+&\eq  - \frac{1}{2 \epsilon}C (x + \epsilon - t) ^ 2\left. \right|_{x}^{x + \epsilon} \eq  \frac{C \epsilon}{2}
+ < C \epsilon
+\end{align*}
+
+Putting it all together we get that 
+$$
+\mathbb{P}(W \le x) - \mathbb{P}(Z \le x) \le \frac{1}{\epsilon} \mathrm{Wass} (W, Z) + C \epsilon
+$$
+
+Now, considering the expression above as a function of $\epsilon$, it is a straightforward computation that the minimizer of this expression is $\epsilon \eq \sqrt{C^{-1}\mathrm{Wass}(W,Z)}$. Plugging in we have: 
+$$
+\textbf{P}(W\leq x)-\textbf{P}(Z\leq x) \leq 2\sqrt{C\mathrm{Wass}(W,Z)}.
+$$
+
+Next, fix $\epsilon>0$ once more, and define $g_{x,\epsilon}^{2}(w)$ analogously to $g_{x,\epsilon}^{1}(w)$, but this time, performing our linear transition on the interval $[x - \epsilon, x]$. Performing the same calculation and minimizing with respect to $\epsilon$ once more gives us the same upper bound for $\textbf{P}(Z\leq x)-\textbf{P}(W\leq x)$.\\
+
+Finally, taking a supremum on the previous equation we obtain:
+
+\begin{equation}
+\mathrm{Kolm}(W,Z)\eq \sup \limits_{x\in \mathbb{R}} |\textbf{P}(W\leq x)-\textbf{P}(Z\leq x)| \leq 2\sqrt{C\mathrm{Wass}(W,Z)}.
+\end{equation}
+In particular, if $Z\sim N(0,1)$, then $C\eq \frac{1}{\sqrt{2\pi}}$. This finishes the proof. 
+\qed
+
+Lemma 1 gives us a sufficient condition for convergence which is remarkably easier to work with then the Kolmogorov metric, which is our first and most natural notion of convergence in probability. For the remainder of this paper, the Wasserstein metric will be our principal method for proving convergence to Gaussian distribution.
+
+\subsection{Integration by Parts}
+
+Now that we have a relation between the Kolmogorov distance and the Wasserstein distance given by \textbf{Lemma 1}, we may shift our attention to studying the expectation of suitable classes of functions to obtain a bound for Wasserstein metrics With this in mind, we show an important result for normal distributions.
+
+\pagebreak
+\begin{theorem} \textbf{Integration by Parts:}
+If $W \sim N(0,1)$, then for all absolutely continuous functions \\
+$f:\mathbb{R} \rightarrow \mathbb{R}$ with $\mathbb{E}|f^{\prime}(W)|<\infty$, we have\\
+\begin{equation}
+\mathbb{E}f^{\prime}(W)\eq \mathbb{E}Wf(W)
+\end{equation}
+Conversely, if $\mathbb{E}[f^{\prime}(W)]\eq \mathbb{E}[Wf(W)]$ for all bounded, continuous and piece-wise continuously differentiable functions $f$ with $\mathbb{E}|f^{\prime}(W)|<\infty$, then $W \sim N(0, 1)$.
+\end{theorem}
+
+We will need an intermediate result before we prove \textbf{Theorem 1}. If we wish to say that $W \sim N(0, 1)$, then it will suffice show that $\p(W \le x) = \p(Z \le x)$ for all $x\in \mathbb{R}$. Therefore, it is natural to look for a function $f$ such that $\p(W \le x) - \p(Z \le x) = \e[f'(W) - Wf(W)]$. Because of this we will show the following lemma.
+
+\begin{lemma}
+Let $Z$ be a standard Gaussian random variable with cumulative distribution function $\Phi(x) \eq  \p(Z \le x)$, and let $z \in \mathbb{R}$. Then the differential equation
+$$
+f^{\prime}(w)-wf(w) \eq  \chi_{(w\leq z)}-\Phi(z)
+$$
+
+has a unique bounded solution given by
+\begin{equation}
+f(w)\eq 
+\left \{
+  \begin{tabular}{cc}
+  $\sqrt{2\pi}e^{\frac{w^{2}}{2}} \Phi(w)(1-\Phi(z)), \quad  w\leq z$ \\
+  $\sqrt{2\pi}e^{\frac{w^{2}}{2}} \Phi(z)(1-\Phi(w)), \quad w > z$   \\
+  \end{tabular}
+\right.
+\end{equation}
+\end{lemma}
+\textbf{Proof.} Multiply both sides of the equation by $e^{-\frac{w^2}{2}}$:
+$$
+e^{-\frac{w^{2}}{2}}[f^{\prime}(w)-wf(w)]\eq  e^{-\frac{w^{2}}{2}}[\chi_{(w\leq z)}-\Phi(z)],
+$$
+
+and notice that 
+$$
+e^{-\frac{w^{2}}{2}}[f^{\prime}(w)-wf(w)] \eq  (f(w)e^{\frac{-w^{2}}{2}})^{\prime}
+$$
+$$
+\implies (f(w)e^{\frac{-w^{2}}{2}})^{\prime} \eq  e^{-\frac{w^{2}}{2}}[\chi_{(w\leq z)}-\Phi(z)].
+$$
+
+And now we may integrate with respect to $w$ on the interval $[-\infty, w]$, which gives us a formula for the general solution:
+\begin{equation}
+f(w)e^{\frac{-w^{2}}{2}} + C\eq  \int_{-\infty}^{w}[\chi_{(x\leq z)}-\Phi(z)]e^{-\frac{x^{2}}{2}}dx,
+\end{equation}
+
+Next, we use the fact that $Z$ is Gaussian to obtain that for all $w \ge z$:
+\begin{align*}
+\int_{-\infty}^{w}[\chi_{(x\leq z)}-\Phi(z)]e^{-\frac{x^{2}}{2}}dx &\eq
+\int_{-\infty}^{w}\chi_{(x\leq z)}e^{-\frac{x^{2}}{2}}dx -\int_{-\infty}^{w}\Phi(z)e^{-\frac{x^{2}}{2}}dx\\
+&\eq \int_{-\infty}^{z}e^{-\frac{x^{2}}{2}}dx  - \Phi(z)\int_{-\infty}^{w}e^{-\frac{x^{2}}{2}}dx\\
+&\eq \sqrt{2\pi}\Phi(z) - \sqrt{2\pi}\Phi(z)\Phi(w)\\ &\eq \sqrt{2\pi}\Phi(z)[1 - \Phi(w)]
+\end{align*}
+
+In particular, using $(7)$ and letting $w \rightarrow \infty$:
+$$
+\lim_{w\to\infty} f(w)e^{\frac{-w^{2}}{2}} + C
+\eq \lim_{w\to\infty} \sqrt{2\pi}\Phi(z)[1 - \Phi(w)] \eq 0
+$$
+
+So that only $C=0$ gives us a bounded solution $f$. This solution will have the form
+
+$$
+f(w) = e^{\frac{w^2}{2}}\int_{-\infty}^{w}[\chi_{(x\leq z)}-\Phi(z)]e^{-\frac{x^{2}}{2}}dx
+$$
+
+We now claim that this solution is equivalent to $(6)$. Indeed, we know that 
+$$
+\int_{-\infty}^{\infty} [\chi_{(x\leq z)}-\Phi(z)]e^{-\frac{x^{2}}{2}}dx \eq 0
+$$
+$$
+\implies \int_{-\infty}^{w} [\chi_{(x\leq z)}-\Phi(z)]e^{-\frac{x^{2}}{2}}dx \eq 
+-\int_{w}^{\infty} [\chi_{(x\leq z)}-\Phi(z)]e^{-\frac{x^{2}}{2}}dx 
+$$
+
+Therefore, we consider what happens when $w \le z$ and when $z > w$:
+
+\begin{itemize}
+\item[Case 1:] if $w\leq z$
+\begin{align*}
+f(w)&\eq e^{\frac{w^{2}}{2}} \int_{-\infty}^{w}[\chi_{(x\leq z)}-\Phi(z)]e^{-\frac{x^{2}}{2}}dx\\
+&\eq e^{\frac{w^{2}}{2}}(1-\Phi(z))\sqrt{2\pi} \int_{-\infty}^{w} \frac{1}{\sqrt{2\pi}}e^{\frac{-x^{2}}{2}}dx\\
+&\eq \sqrt{2\pi}e^{\frac{w^{2}}{2}}\Phi(w)(1-\Phi(z))
+\end{align*}
+
+\item[Case 2:] if $w>z$
+\begin{align*}
+f(w)&\eq -e^{\frac{w^{2}}{2}} \int_{w}^{\infty}[\chi_{(x\leq z)}-\Phi(z)]e^{-\frac{x^{2}}{2}}dx \\
+&\eq e^{\frac{w^{2}}{2}} \int_{w}^{\infty} e^{-\frac{x^{2}}{2}} \Phi(z) dx\\
+&\eq \sqrt{2\pi} e^{\frac{w^{2}}{2}} \Phi(z) \int_{w}^{\infty} \frac{1}{\sqrt{2\pi}} e^{-\frac{x^{2}}{2}}dx\\
+&\eq \sqrt{2\pi} e^{\frac{w^{2}}{2}} \Phi(z) (1-\Phi(w)).
+\end{align*}
+\qed
+\end{itemize} 
+We are now ready to prove Theorem 1.
+
+\textbf{Proof of Theorem 1.} ``$\Longrightarrow$'' Suppose that $Z\sim N(0,1)$. First, write $\e f'(Z)$ as an integral:
+\begin{align*}
+\mathbb{E}f^{\prime}(Z)&\eq \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{+\infty} f^{\prime}(z)e^{-\frac{z^{2}}{2}} dz
+  \\
+  &\eq \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{0} f^{\prime}(z)e^{-\frac{z^{2}}{2}} dz +\frac{1}{\sqrt{2\pi}} \int_{0}^{+\infty} f^{\prime}(z)e^{-\frac{z^{2}}{2}} dz
+  \\
+\end{align*}
+Next, we may integrate by parts to find that: $e^{-\frac{z^2}{2}} = 
+\int_{-\infty}^{z}(-x)e^{-\frac{z^2}{2}} = \int_{z}^{\infty}xe^{-\frac{z^2}{2}}$ \\
+So substituting we obtain
+
+\begin{align*}
+\mathbb{E}f^{\prime}(Z) &\eq \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{0} f^{\prime}(z) \int_{-\infty}^{z}(-x) e^{-\frac{x^{2}}{2}} dxdz +\frac{1}{\sqrt{2\pi}} \int_{0}^{+\infty} f^{\prime}(z) \int_{z}^{+\infty}xe^{-\frac{x^{2}}{2}} dxdz
+\end{align*}
+And using Fubini's theorem:
+\begin{align*}
+\mathbb{E}f^{\prime}(Z) &\eq \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{0}(\int_{x}^{0}f^{\prime}(z)dz)(-xe^{-\frac{x^{2}}{2}})dx + \frac{1}{\sqrt{2\pi}} \int_{0}^{+\infty}(\int_{0}^{x}f^{\prime}(z)dz)xe^{-\frac{x^{2}}{2}}dx
+  \\
+  &\eq \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{+\infty} (f(x)-f(0)) xe^{-\frac{x^{2}}{2}}dx
+  \\
+  &\eq \mathbb{E}Zf(Z)-\frac{1}{\sqrt{2\pi}}f(0) \int_{-\infty}^{+\infty}xe^{-\frac{x^{2}}{2}}dx
+  \\
+  &\eq \mathbb{E}Zf(Z),
+\end{align*}
+
+Where we solve this last integral by noticing that $xe^{-\frac{x^2}{2}}$ is an odd function.
+
+``$\Longleftarrow$'' Suppose that $\mathbb{E}f^{\prime}(Z)\eq \mathbb{E}Zf(Z)$ for all bounded, continuous and piece-wise continuously differentiable functions $f$ with $\mathbb{E}|f^{\prime}(Z)|<\infty$.\\
+Now for $x \in \mathbb{R}$, take $f$ to be the unique bounded solution of the differential solution in \textbf{Lemma 2}. By the formula $(6)$, we have that $f$ is piecewise continuously differentiable, so we have 
+$$
+0\eq  \mathbb{E}[f^{\prime}(W)-Wf(W)] \eq  \mathbb{E}[\chi_{(w\leq x)}]-\Phi(z)\eq \textbf{P}(W\leq x)-\textbf{P}(Z\leq x).
+$$
+Therefore, $W\sim N(0,1)$. This finishes the proof.
+\qed
+
+\section{Stein's method}
+
+\subsection{Introduction to Stein's Method}
+
+Equipped with \textbf{Theorem 1}, we will now construct a new method of bounding how far (in the Wasserstein sense) a random variable is from Gaussian distribution.
+
+We will find a class of functions $f\in \mathcal{F}$ such that 
+\begin{equation}
+\mathrm{Wass}(W, Z) = 
+\sup \limits_{g\in \mathcal{G}} \bigl|\mathbb{E}g(W)-\mathbb{E}g(Z)\bigr|\leq \sup \limits_{f\in \mathcal{F}} \bigl|\mathbb{E}[f^{\prime}(W)-Wf(W)]\bigr|,
+\end{equation}
+then we can bound the Wasserstein distance by bounding $|\mathbb{E}[f^{\prime}(W)-Wf(W)]|$.
+In order to do this, for all $g \in \mathcal{G}$, we would like $\mathcal{F}$ to contain a function $f$ such that
+\begin{equation}
+f^{\prime}(w)-wf(w)\eq g(w)-\mathbb{E}g(Z)
+\end{equation}
+(as usual, $Z$ a random variable s.t. $Z \sim N(0, 1)$) This is known as Stein's equation.
+
+If this condition holds, then taking expectations and then evaluating the supremum across $\mathcal{F}$ will give us the inequality \textbf{(8)}.
+\begin{equation}
+\mathbb{E}[f^{\prime}(W)-Wf(W)]\eq \mathbb{E}g(W)-\mathbb{E}g(Z).
+\end{equation}
+
+Noticeably, the solution to Stein's equation has several boundary conditions, detailed as follows.
+
+\begin{lemma}
+Given a function $g: \mathbb{R} \rightarrow \mathbb{R}$ that is bounded, then there exists absolutely continuous solution $f$ to Stein's equation, satisfying
+$$
+|f|_{\infty}\leq \sqrt{\frac{\pi}{2}}|g(w)-\mathbb{E}g(Z)|_{\infty}\quad and\quad |f^{\prime}|_{\infty}\leq 2|g(w)-\mathbb{E}g(Z)|_{\infty}.
+$$ 
+And if $g$ is {\it Lipschitz\/}, then
+$$
+|f|_{\infty} \leq |g^{\prime}|_{\infty}, \quad f^{\prime}|_{\infty} \leq \sqrt{\frac{\pi}{2}}|g^{\prime}|_{\infty}, \quad \mbox{and}\quad |f^{\prime \prime}|_{\infty} \leq 2|g^{\prime}|_{\infty}.
+$$
+\end{lemma}
+
+The proof this Lemma is long, and will be solved in section \textbf{2.3}.
+
+Particularly, if $\mathcal{F}$ is defined as a family of functions satisfying
+$$
+\mathcal{F}\eq \{\forall f\in \mathcal{F}, \ |f|_{\infty} \leq 1, \ f^{\prime}|_{\infty} \leq \sqrt{\frac{2}{\pi}}, \ \mbox{and}\ |f^{\prime \prime}|_{\infty} \leq 2 \}
+$$
+then we have that $\mathcal{F}$ contains all solutions to Stein's equation with $g$ $1$-Lipschitz. Therefore, 
+
+\begin{equation}
+\mathrm{Wass}(W,Z)\eq \sup\limits_{g\in \mathcal{G}}\bigl|\mathbb{E}g(W)-\mathbb{E}g(Z) \bigr| \leq \sup \limits_{f\in \mathcal{F}} \bigl|\mathbb{E}[f^{\prime}(W)-Wf(W)]\bigr|.
+\end{equation}
+
+From \textbf{Lemma 1} we know that $\mathrm{Kolm}(W,Z)\leq  2\sqrt{C\mathrm{Wass}(W,Z)}$. Hence if we can show that the upper bound of $\mathrm{Wass}(W,Z)$ approximates $0$, then we can conclude that\\ $|\textbf{P}(W\leq x)-\textbf{P}(Z\leq x)| \rightarrow 0$. Finally, by definition of convergence in distribution, we get 
+$$
+W\overset{\cdot}{\sim} N(0,1).
+$$
+In \textbf{Section 3}, we will see some applications of Stein's method to show normal approximation by bounding Wasserstein distance.
+
+In this section, we will study the solution of Stein's equation
+$$
+f^{\prime}(w)-wf(w)\eq g(w)-\mathbb{E}g(Z),
+$$
+for both general $g$ and special $g$.
+\subsection{Solution to Stein's equation}
+
+\begin{lemma}
+For a given real valued measurable function $g$ with $\mathbb{E}|g(Z)|<\infty, and\ Z\sim N(0,1)$, the Stein's equation for $g$ is:
+$$
+f^{\prime}(w)-wf(w)\eq g(w)-\mathbb{E}g(Z),
+$$
+and the unique, bounded solution to this differential equation is
+\begin{equation}
+f(w)\eq e^{\frac{w^{2}}{2}} \int_{-\infty}^{w} e^{\frac{-x^{2}}{2}}\bigl[g(x)-\mathbb{E}g(Z)\bigr]dx\eq -e^{\frac{-w^{2}}{2}} \int_{w}^{+\infty} e^{\frac{-x^{2}}{2}}\bigl[g(x)-\mathbb{E}g(Z)\bigr]dx.
+\end{equation}
+\end{lemma}
+\textbf{Proof.} Mutilplying both sides of Stein's equation by $e^{-\frac{w^{2}}{2}}$ yields
+$$
+\bigl(f(w)e^{\frac{-w^{2}}{2}}\bigr)^{\prime}\eq e^{\frac{-w^{2}}{2}}\bigl(g(w)-\mathbb{E}g(Z)\bigr).
+$$
+Integrating on $w$ gives us
+\begin{align*}
+f(w)e^{\frac{-w^{2}}{2}}&\eq \int_{-\infty}^{w} e^{\frac{-x^{2}}{2}}[g(x)-\mathbb{E}g(Z)]dx + C\\
+f(w)&\eq e^{\frac{w^{2}}{2}} \int_{-\infty}^{w} e^{\frac{-x^{2}}{2}}[g(x)-\mathbb{E}g(Z)]dx + Ce^{\frac{w^{2}}{2}}.
+\end{align*}
+In order to get a unique and bounded solution $f(w)$, we take limits as $w \to \infty$, and notice that to achieve boundedness, we must have:
+\begin{align*}
+ - C &\eq \lim \limits_{w \to \infty} \int_{-\infty}^{w} e^{\frac{-x^{2}}{2}}[g(x)-\mathbb{E}g(Z)]dx \\
+ &\eq \lim \limits_{w \to \infty} [\int_{-\infty}^{w} e^{\frac{-x^{2}}{2}}g(x)dx - \int_{-\infty}^{w} e^{\frac{-x^{2}}{2}} \e g(Z)dx] \\
+ & \eq \int_{-\infty}^{\infty} e^{\frac{-x^{2}}{2}}g(x)dx - \e g(Z) \int_{-\infty}^{\infty} e^{\frac{-x^{2}}{2}}dx \\
+ & \eq \sqrt{2\pi} \e g(Z) - \sqrt{2\pi} \e g(Z) \eq 0
+\end{align*}
+
+Therefore, $C$ must be 0. So the final solution for Stein's equation is
+$$
+f(w)\eq e^{\frac{w^{2}}{2}} \int_{-\infty}^{w} e^{\frac{-x^{2}}{2}}[g(x)-\mathbb{E}g(Z)]dx
+$$
+
+Furthermore, a consequence of the fact that 
+$$
+\int_{-\infty}^{w} e^{\frac{-x^{2}}{2}}[g(x)-\mathbb{E}g(Z)]dx \eq 0
+$$
+
+which was just showed, is that we get our desired expression:
+\begin{align*}
+f(w)&\eq e^{\frac{w^{2}}{2}} \int_{-\infty}^{w} e^{\frac{-x^{2}}{2}}[g(x)-\mathbb{E}g(Z)]dx\\
+&\eq -e^{\frac{w^{2}}{2}} \int_{w}^{+\infty} e^{\frac{-x^{2}}{2}}[g(x)-\mathbb{E}g(Z)]dx.
+\end{align*}
+This finishes the proof.
+\qed
+
+\medskip
+\noindent
+\textbf{Claim:} additionally, if $g$ is {\it Lipschitz\/}, we have an equivalent form of the solution:
+\begin{equation}
+f(w)\eq -\int_{0}^{1} \frac{1}{2\sqrt{t(1-t)}} \mathbb{E}[Zg(\sqrt{t}w+\sqrt{1-t}Z)]dt, \quad Z\sim N(0,1),
+\end{equation}
+
+This form will be helpful in proving our boundary conditions.
+
+\noindent
+\textbf{Proof.} We need to check that $(13)$ satisfies $f^{\prime}(w)-wf(w)\eq g(w)-\mathbb{E}g(Z)$.\\
+First, let's take first derivative of $f(w)$ with respect to $w$. Since expectation is a linear operator, our derivative will be
+$$
+f^{\prime}(w)\eq -\int_{0}^{1} \frac{1}{2\sqrt{1-t}} \mathbb{E}[Zg^{\prime}(\sqrt{t}w+\sqrt{1-t}Z)]dt.
+$$
+Next, we would like to use integration by parts on $f$. In order to do this, we must first check that for a normal Gaussian random variable $Y$ we have $\e |f'(Y)| < \infty$. In fact,
+\begin{align*}
+\e f'(Y) &\eq -\e \left[ \int_{0}^{1} \frac{1}{2\sqrt{1-t}} \mathbb{E}[Zg^{\prime}(\sqrt{t}Y+\sqrt{1-t}Z)|Y]dt \right] \\
+&\eq - \int_{0}^{1} \frac{1}{2\sqrt{1-t}} \e \left[ \mathbb{E}[Zg^{\prime}(\sqrt{t}Y+\sqrt{1-t}Z)|Y] \right]dt \\
+&\eq - \int_{0}^{1} \frac{1}{2\sqrt{1-t}} \e [Zg^{\prime}(\sqrt{t}Y+\sqrt{1-t}Z)]dt \\
+&\le - \int_{0}^{1} \frac{1}{2\sqrt{1-t}} \inf \limits_{t \in [0, 1]} \e  [Zg^{\prime}(\sqrt{t}Y+\sqrt{1-t}Z)]dt
+\end{align*}
+
+Notice that this can be done because $\e  [Zg^{\prime}(\sqrt{t}Y+\sqrt{1-t}Z)]$ is continuous in $t$, so it attains a minimum on $[0, 1]$. Next:
+\begin{align*}
+\e f'(Y) &\le - \inf \limits_{t \in [0, 1]} \e  [Zg^{\prime}(\sqrt{t}Y+\sqrt{1-t}Z)] \int_{0}^{1} \frac{1}{2\sqrt{1-t}} dt \\
+&\eq - \inf \limits_{t \in [0, 1]} \e  [Zg^{\prime}(\sqrt{t}Y+\sqrt{1-t}Z)] < \infty
+\end{align*}
+Similarly, we may take the supremum instead to find the bound
+
+$$
+-\infty < - \sup \limits_{t \in [0, 1]} \e  [Zg^{\prime}(\sqrt{t}Y+\sqrt{1-t}Z)] \le \e f'(Y)
+$$
+$$
+\implies \e |f'(Y)| < \infty
+$$
+As wanted. Then using integration by parts, $\mathbb{E}Zf(Z)\eq \mathbb{E}f^{\prime}(Z)$, we have
+$$
+\mathbb{E}[Zg(\sqrt{t}w+\sqrt{1-t}Z)]\eq \sqrt{1-t}\mathbb{E}[g^{\prime}(\sqrt{t}w+\sqrt{1-t}Z)].
+$$
+Combining the above calculations, we obtain that
+\begin{align*}
+f^{\prime}(w)-wf(w)&\eq -\int_{0}^{1} \mathbb{E}\bigl[\frac{Z}{2\sqrt{1-t}}g^{\prime}(\sqrt{t}w+\sqrt{1-t}Z) \bigr]dt+\int_{0}^{1} \mathbb{E}\bigl[\frac{w}{2\sqrt{t(1-t)}}\cdot Z\cdot g(\sqrt{t}w+\sqrt{1-t}Z) \bigr]dt \\
+&\eq -\int_{0}^{1} \mathbb{E}\bigl[\frac{Z}{2\sqrt{1-t}}g^{\prime}(\sqrt{t}w+\sqrt{1-t}Z) \bigr]dt+\\
+&\quad  \int_{0}^{1} \mathbb{E}\bigl[\frac{w}{2\sqrt{t(1-t)}}\cdot \sqrt{1-t} \cdot \mathbb{E}\bigl[g^{\prime}(\sqrt{t}w+\sqrt{1-t}Z) \bigr]dt\\
+&\eq \int_{0}^{1} \mathbb{E}(\frac{-Z}{2\sqrt{1-t}}+\frac{w}{2\sqrt{t}})g^{\prime}(\sqrt{t}w+\sqrt{1-t}Z)dt\\
+&\eq \mathbb{E}\int_{0}^{1} \frac{dg(\sqrt{t}w+\sqrt{1-t}Z)}{dt}dt\\
+&\eq \mathbb{E}\Bigl[g(\sqrt{t}w+\sqrt{1-t}Z)\Bigl|_{0}^{1} \Bigr]\\
+&\eq g(x)-\mathbb{E}g(Z).
+\end{align*}
+This finishes the proof.
+\qed
+
+
+\subsection{Boundary conditions for the solution of Stein's equation}
+
+In this section, we will show the proof of \textbf{Lemma 3}, the boundary conditions for the solution of Stein's equation. To do this, we will employ the following useful inequality.
+
+\begin{lemma} \textbf{(Mill's Ratio Inequality)}
+For all $x \in \mathbb{R}$:
+
+\begin{equation}
+    \frac{x}{1 + x^2} < e ^{\frac{x^2}{2}} \int \limits_{x}^{\infty} e^ {- \frac{t^2}{2}}dt < \frac{1}{x}
+\end{equation}
+\end{lemma}
+
+\textbf{Proof:} This argument is due to R.D. Gordon \footnote{R.D. Gordon, "Values of Mills' Ratio of Area to Bounding Ordinate and of the Normal Probability Integral for Large Values of the Argument" \textit{Annals of Math. Stat.,} Vol. 12 (1941), pp. 364-366}. For simplicity, define $R(x) = e ^{\frac{x^2}{2}} \int \limits_{x}^{\infty} e^ {- \frac{t^2}{2}}dt$. First note that $R(x)$ is positive for all $x$. Next, using the Fund. Theorem of Calculus and uniform continuity of the normal distribution:
+\begin{align*}
+R'(x) &\eq x e ^{\frac{x^2}{2}} \int \limits_{x}^{\infty} e^ {- \frac{t^2}{2}dt} + e ^{\frac{x^2}{2}} \left[e ^{- \frac{x^2}{2}} \right] \biggr|_{x}^{\infty} \\
+&\eq  xR(x) - 1
+\end{align*}
+This means that, if at any point $x_0$, $R(x)$ is increasing, then $R'(x) = xR(X) - 1$ will also be increasing. This means that if $R(x)$ is increasing at any point, it will have unbounded growth as $x \to \infty$. However,
+\begin{align*}
+\lim \limits_{x \to \infty} xR(x) &\eq \lim \limits_{x \to \infty}  x e ^{\frac{x^2}{2}} \int \limits_{x}^{\infty} e^ {- \frac{t^2}{2}}dt \\
+&\le  e ^{\frac{x^2}{2}} \int \limits_{x}^{\infty} t e^ {- \frac{t^2}{2}}dt \eq e ^{\frac{x^2}{2}} \left[ - e ^{- \frac{x^2}{2}} \right] \biggr|_{x}^{\infty} \eq 1
+\end{align*}
+
+Therefore, $R$ cannot have unbounded growth, so $R$ is monotonically decreasing. This means that $R'(x) < 0$ for all real $x$. Therefore,
+
+$$
+R(x) = e ^{\frac{x^2}{2}} \int \limits_{x}^{\infty} e^ {- \frac{x^2}{2}}dt \le \frac{1}{x} \quad \forall x \in \mathbb{R}.
+$$
+
+To show the other inequality, take the second and third derivatives of $R$ using our formula for the first derivative:
+
+\begin{align*}
+R''(x) &\eq xR'(x) + R(x) = xR'(x) + \frac{1}{x}(R'(x) + 1) \\
+&\eq \frac{1 + x^2}{x}R'(x) + \frac{1}{x}, \\
+R'''(x) &\eq (1 + \frac{2}{1 + x^2})xR''(x) - \frac{2}{1 + x^2}
+\end{align*}
+This means that $R''(x)$ is decreasing whenever it is negative. Therefore, if at any point $x_0$ we have $R''(x_0) < 0$, then we get that $R''$ is monotonically decreasing on $[x_0, \infty]$, and furthermore, $R'''(x) \le xR''(x)$ for $x > x_0$, so that $\lim \limits_{x \to \infty} R''(x) = - \infty$. However, this contradicts the positivity of $R$. Therefore, we have $R''(x) > 0$ for all $x$. 
+
+From this we may conclude that
+\begin{align*}
+0 < R''(x) &\eq \frac{1 + x^2}{x}R'(x) + \frac{1}{x} \\
+&\eq \frac{1 + x^2}{x}(xR(x) - 1) + \frac{1}{x} \\
+&\eq (1 + x^2)R(x) - x
+\implies \frac{x}{1 + x^2} < R(x),
+\end{align*}
+which is precisely our inequality.
+\qed
+
+Now we proceed to prove the boundary conditions detailed in the previous section.
+\begin{lemma}
+If $g:\mathbb{R}\rightarrow \mathbb{R}$ is bounded, then the bounded solution $f$ to Stein's equation satisfies
+\begin{itemize}
+\item [(i)] $|f|_{\infty}\leq \sqrt{\frac{\pi}{2}}\Bigl|g(w)-\mathbb{E}g(Z)\Bigr|_{\infty}$
+
+\item [(ii)] $|f^{\prime}|_{\infty} \leq 2|g(w)-\mathbb{E}g(Z)|_{\infty}$.
+\end{itemize}
+\end{lemma}
+\textbf{Proof. (i)} We consider the cases $w>0$ and $w\leq 0$ separately.
+\begin{itemize}
+\item [Case 1] $w>0$\\
+Recall the solution of Stein's equation for general $g$
+$$
+f(w)\eq -e^{\frac{w^{2}}{2}} \int_{w}^{+\infty} e^{\frac{-x^{2}}{2}}\bigl[g(x)-\mathbb{E}g(Z)\bigr]dx.
+$$
+Then the supremum norm of $f$ satisfies
+\begin{align*}
+\sup \limits_{w \in [0, \infty]} |f| &\leq |g(w)-\mathbb{E}g(Z)|_{\infty} \cdot e^{\frac{w^{2}}{2}} \int_{w}^{+\infty} e^{\frac{-x^{2}}{2}}dx \\
+& \eq |g(w)-\mathbb{E}g(Z)|_{\infty} \cdot R(w)
+\end{align*}
+
+And we have shown that $R(x)$ is monotonically decreasing on $[0, \infty]$, so
+
+\begin{align*}
+\sup \limits_{w \in [0, \infty]} |f| &\leq |g(w)-\mathbb{E}g(Z)|_{\infty}R(0) \\
+&\eq \sqrt{\frac{\pi}{2}}\Bigl|g(w)-\mathbb{E}g(Z)\Bigr|_{\infty}
+\end{align*}
+when $w>0$.
+\item[b.] $w\leq 0$ \\
+In this case, we use another form of the soluiton
+$$
+e^{\frac{w^{2}}{2}} \int_{-\infty}^{w} e^{\frac{-x^{2}}{2}}[g(x)-\mathbb{E}g(Z)]dx,
+$$
+Next, using the fact that the Gaussian distribution is an even function, we may apply the same method as above to obtain the same bound for $\sup \limits_{w \in [- \infty, 0]} |f|$.
+\end{itemize}
+Therefore,
+$$
+|f|_{\infty} \leq \sqrt{\frac{\pi}{2}}\Bigl|g(w)-\mathbb{E}(g(Z))\Bigr|_{\infty}
+$$
+
+\textbf{(ii)}: Similarly to the previous part, we use the fact that the Gaussian distribution function is even. Therefore, we need only evaluate the region where $w>0$.\\
+By taking first derivative with respect to $w$, we have
+\begin{align*}
+f^{\prime}(w)&\eq wf(w)+g(w)-\mathbb{E}g(Z)\\
+&\eq g(w)-\mathbb{E}g(Z)+w(-e^{\frac{w^{2}}{2}}) \int_{w}^{+\infty} e^{\frac{-x^{2}}{2}}[g(w)-\mathbb{E}g(Z)]dx,
+\end{align*}
+and hence
+$$
+|f^{\prime}(w)|_{\infty}\leq |g(w)-\mathbb{E}g(Z)|_{\infty} (1+we^{\frac{w^{2}}{2}} \int_{w}^{+\infty} e^{\frac{-x^{2}}{2}}dx).
+$$
+By Mill's ratio inequality $R(x)<\frac{1}{x}$, we conclude
+$$
+we^{\frac{w^{2}}{2}} \int_{w}^{+\infty} e^{\frac{-x^{2}}{2}}dx < 1, \mbox{when} \ w>0.
+$$
+Therefore,
+$$
+|f^{\prime}|_{\infty} \leq 2|g(w)-\mathbb{E}g(Z)|_{\infty}.
+$$
+\qed
+
+\begin{lemma}
+If $g$ is {\it Lipschitz\/}, but not necessarily bounded, then the bounded solution $f$ to Stein's equation satisfies
+\begin{enumerate}
+    \item [(i)] $|f|_{\infty} \leq |g^{\prime}|_{\infty}$
+    \item [(ii)] $|f^{\prime}|_{\infty} \leq \sqrt{\frac{\pi}{2}}|g^{\prime}|_{\infty}$
+    \item [(iii)] $|f^{\prime \prime}|_{\infty} \leq 2|g^{\prime}|_{\infty}$.
+\end{enumerate}
+\end{lemma}
+\textbf{Proof. (i)}: If $g$ is {\it Lipschitz\/}, then we have another form of solution that has been proved in the previous subsection
+$$
+f(w)\eq \int_{0}^{1} \frac{1}{2\sqrt{t(1-t)}} \mathbb{E}[Zg(\sqrt{t}w+\sqrt{1-t}Z)]dt, \quad Z\sim N(0,1).
+$$
+Define the function $h$ by
+$$
+h(Z)\eq g(\sqrt{t}w+\sqrt{1-t}Z),
+$$
+and using integration by parts we know that for the absolutely continuous function $h$
+$$
+\mathbb{E}Zh(Z)\eq \mathbb{E}h^{\prime}(Z),
+$$
+then we can obtain that 
+\begin{equation}
+\mathbb{E}[Zg(\sqrt{t}w+\sqrt{1-t}Z)]\eq \sqrt{1-t} \mathbb{E}[g^{\prime}(\sqrt{t}w+\sqrt{1-t}Z)].
+\end{equation}
+Using this equality in our exxpression for $f$:
+$$
+f(w)\eq  -\int_{0}^{1} \frac{1}{2\sqrt{t(1-t)}}\cdot \sqrt{1-t} \mathbb{E}[g^{\prime}(\sqrt{t}w+\sqrt{1-t}Z)]dt,
+$$
+and thus
+$$
+|f|_{\infty} \leq |g^{\prime}|_{\infty} \int_{0}^{1} \frac{1}{2\sqrt{t}}dt \eq |g^{\prime}|_{\infty}.
+$$
+
+\textbf{(ii)}: Once again we have
+$$
+f(w)\eq -\int_{0}^{1} \frac{1}{2\sqrt{t(1-t)}}  \mathbb{E}[Zg(\sqrt{t}w+\sqrt{1-t}Z)]dt,
+$$
+and taking the first derivative with respect to $w$, we obtain that
+$$
+f^{\prime}(w)\eq -\int_{0}^{1} \frac{1}{2\sqrt{1-t}} \mathbb{E}[Zg^{\prime}(\sqrt{t}w+\sqrt{1-t}Z)]dt.
+$$
+So the supremum norm of $f^{\prime}(w)$ satisfies
+$$
+|f^{\prime}|_{\infty} \leq |g^{\prime}|_{\infty}\cdot \mathbb{E}|Z|\leq 2|g^{\prime}|_{\infty} \int_{0}^{+\infty} x\frac{1}{\sqrt{2\pi}} e^{-\frac{x^{2}}{2}}dx \eq  \sqrt{\frac{\pi}{2}}|g^{\prime}|_{\infty}.
+$$
+
+\textbf{(iii)}: This time we will use the standard form of the solution $f$. By differentiating both sides of Stein's equation with respect to $w$, we get
+\begin{align*}
+f^{\prime \prime}(w)&\eq g^{\prime}(w)+f(w)+wf^{\prime}(w)\\
+&\eq g^{\prime}(w)+f(w)+w\bigl[wf(w)+g(w)-\mathbb{E}g(Z)\bigr] \\
+& \eq g'(w) + (1 + w^2)f(w) + (g(w) - \e g(Z))
+\end{align*}
+First we write an equivalent expression to $g(w)-\mathbb{E}g(Z)$. To do this we write it as an integral:
+\begin{align*}
+g(w)-\mathbb{E}g(Z)&\eq g(w)-\frac{1}{\sqrt{2\pi}} \int_{-\infty}^{+\infty} g(y)e^{-\frac{y^{2}}{2}}dy\\
+&\eq \frac{1}{\sqrt{2\pi}} \int_{-\infty}^{+\infty} (g(w)-g(y))e^{-\frac{y^{2}}{2}}dy\\
+&\eq \frac{1}{\sqrt{2\pi}}[\int_{-\infty}^{w} (g(w)-g(y))e^{-\frac{y^{2}}{2}}dy +\int_{w}^{+\infty} (g(w)-g(y))e^{-\frac{y^{2}}{2}}dy]\\
+&\eq \frac{1}{\sqrt{2\pi}}[\int_{-\infty}^{w} e^{-\frac{y^{2}}{2}} \int_{y}^{w} g^{\prime}(z)dzdy - \int_{w}^{+\infty} 1 \int_{w}^{y} e^{-\frac{y^{2}}{2}}g^{\prime}(z)dzdy]
+\end{align*}
+Next, use Fubini's theorem to change the order of integration
+\begin{align*}
+g(w)-\mathbb{E}g(Z)&\eq \frac{1}{\sqrt{2\pi}}[\int_{-\infty}^{w} g^{\prime}(z) \int_{-\infty}^{z} e^{-\frac{y^{2}}{2}}dydz - \int_{w}^{+\infty} g^{\prime}(z) \int_{z}^{+\infty} e^{-\frac{y^{2}}{2}}dydz]\\
+&\eq \int_{-\infty}^{w} g^{\prime}(z)\Phi(z)dz - \int_{w}^{+\infty} g^{\prime}(z)(1-\Phi(z))dz
+\end{align*}
+Next we rewrite $f(w)$ by using $\Phi(z)\eq \textbf{P}(Z\leq z)$ and $\bar{\Phi}(z)\eq \textbf{P}(Z > z) \eq 1 - \Phi(z)$, and the equality we just obtained as follows:
+\begin{align}
+f(w)&\eq e^{\frac{w^{2}}{2}} \int_{-\infty}^{w} e^{\frac{-y^{2}}{2}}[g(y)-\mathbb{E}g(z)]dy \nonumber \\
+&\eq e^{\frac{w^{2}}{2}} \int_{-\infty}^{w} e^{\frac{-y^{2}}{2}} \bigl(\int_{-\infty}^{y} g^{\prime}(z)\Phi(z)dz - \int_{y}^{\infty} g^{\prime}(z)  \bar{\Phi}(z)dz   \bigr)dy \nonumber
+\end{align}
+So once again using Fubini's, and splitting up intervals of integration in our last integral, we have
+\begin{align}
+f(w)&\eq e^{\frac{w^{2}}{2}} \int_{-\infty}^{w} g^{\prime}(z)\Phi(z) \int_{z}^{w} e^{\frac{-y^{2}}{2}}dydz - e^{\frac{w^{2}}{2}}\bigl[\int_{-\infty}^{w} g^{\prime}(z) \bar{\Phi}(z)\int_{-\infty}^{z}e^{\frac{-y^{2}}{2}}dydz+ \nonumber \\
+&\quad \int_{w}^{+\infty}g^{\prime}(z) \bar{\Phi}(z) \int_{-\infty}^{w} e^{\frac{-y^{2}}{2}}dydz  \bigr]. 
+\end{align}
+And Since 
+\begin{align*}
+\sqrt{2\pi} e^{\frac{w^{2}}{2}} \int_{-\infty}^{w} g^{\prime}(z)\Phi(z) \int_{z}^{w} \frac{1}{\sqrt{2\pi}} e^{\frac{-y^{2}}{2}}dydz &\eq  \sqrt{2\pi} e^{\frac{w^{2}}{2}} \int_{-\infty}^{w} g^{\prime}(z)\Phi(z) (\Phi(w)-\Phi(z))dz\\
+&\eq \sqrt{2\pi} e^{\frac{w^{2}}{2}} \int_{-\infty}^{w} g^{\prime}(z)\Phi(z) (\bar{\Phi}(z)-\bar{\Phi}(w))dz,
+\end{align*}
+we can rewrite $(16)$ as follows
+\begin{align*}
+f(w)&\eq  \sqrt{2\pi} e^{\frac{w^{2}}{2}} \int_{-\infty}^{w} g^{\prime}(z)\Phi(z) (\bar{\Phi}(z)-\bar{\Phi}(w))dz - \\ 
+& \quad \quad - \sqrt{2\pi} e^{\frac{w^{2}}{2}} \bigl[\int_{-\infty}^{w} g^{\prime}(z) \bar{\Phi}(z)\Phi(z)dz +\int_{w}^{\infty} g^{\prime}(z)\bar{\Phi}(z) \Phi(w)dz  \bigr]\\
+&\eq \sqrt{2\pi} e^{\frac{w^{2}}{2}} \bigl[\int_{-\infty}^{w} g^{\prime}(z)\Phi(z) (\bar{\Phi}(z)-\bar{\Phi}(w))dz - \int_{-\infty}^{w} g^{\prime}(z) \bar{\Phi}(z)\Phi(z)dz -\int_{w}^{\infty} g^{\prime}(z)\bar{\Phi}(z) \Phi(w)dz \bigr]\\
+&\eq -\sqrt{2\pi} e^{\frac{w^{2}}{2}} \bigl[\int_{-\infty}^{w} g^{\prime}(z)\Phi(z) \bar{\Phi}(w)dz +\int_{w}^{\infty}g^{\prime}(z)\bar{\Phi}(z) \Phi(w)dz  \bigr]\\
+&\eq -\sqrt{2\pi} e^{\frac{w^{2}}{2}} \bigl[\bar{\Phi}(w) \int_{-\infty}^{w}g^{\prime}(z)\Phi(z)dz+\Phi(w) \int_{w}^{\infty}g^{\prime}(z) \bar{\Phi}(z)dz \bigr].
+\end{align*}
+Combining all these calculations, we get
+\begin{align*}
+f^{\prime \prime}(w)&\eq g^{\prime}(w) + f(w) + w\bigl[wf(w)+g(w)-\mathbb{E}g(z) \bigr]\\
+&\eq g^{\prime}(w)+w\bigl[g(w)-\mathbb{E}g(z)\bigr] +(1+w^{2})f(w)\\
+&\eq g^{\prime}(w)+w\bigl[\int_{-\infty}^{w}g^{\prime}(z)\Phi(z)dz -\int_{w}^{+\infty} g^{\prime}(z) \bar{\Phi}(z)dz \bigr]-\sqrt{2\pi}(1+w^2)e^{\frac{w^2}{2}} \bigl[\bar{\Phi}(w) \int_{-\infty}^{w}g^{\prime}(z)\Phi(z)dz\\
+&\quad +\Phi(w) \int_{w}^{\infty}g^{\prime}(z) \bar{\Phi}(z)dz  \bigr]\\
+&\eq g^{\prime}(w)+\bigl[w-\sqrt{2\pi}(1+w^{2})e^{\frac{w^2}{2}} \bar{\Phi}(w) \bigr] \int_{-\infty}^{w} g^{\prime}(z)\Phi(z)dz+\\
+&\quad \bigl[-w- \sqrt{2\pi}(1+w^{2})e^{\frac{w^2}{2}}\Phi(w) \bigr]\int_{w}^{+\infty}g^{\prime}(z) \bar{\Phi}(z)dz.
+\end{align*}
+Then, taking the supremum of $f^{\prime \prime}(w)$ on $[, \infty]$:
+$$
+\sup \limits_{w \in [0, 1]} |f^{\prime \prime}|\le
+$$
+\begin{equation}
+|g^{\prime}\bigr|_{\infty} \sup \limits_{w \in [0, 1]} \bigl[1+|w-\sqrt{2\pi}(1+w^{2})e^{\frac{w^2}{2}} \bar{\Phi}(w)|\int_{-\infty}^{w}\Phi(z)dz
++ \bigl|-w- \sqrt{2\pi}(1+w^{2})e^{\frac{w^2}{2}}\Phi(w)\bigr| \int_{w}^{\infty} \bar{\Phi}(z)dz  \bigr].
+\end{equation}
+Now we wish to compute the sign of the terms in absolute value. To do this, recall that by Mill's ratio inequality, for $x > 0$:
+$$
+\frac{x}{1+x^{2}} \leq e^{\frac{x^{2}}{2}} \int_{x}^{\infty} e^{-\frac{t^{2}}{2}}dt < \frac{1}{x},
+$$
+but notice that $\Phi(x) \eq \int_{- \infty}^{x}\frac{1}{\sqrt{2 \pi}} e^{\frac{-t^{2}}{2}}dt \eq 1 - \int_{x}^{\infty} \frac{1}{\sqrt{2 \pi}} e^{\frac{-t^{2}}{2}}dt$
+so our inequality is equivalent to
+\begin{equation}
+\frac{xe^{\frac{-x^{2}}{2}}}{\sqrt{2\pi}(1+x^{2})}\leq 1-\Phi(x) \leq \frac{e^{\frac{-x^{2}}{2}}}{x\sqrt{2\pi}}.
+\end{equation}
+Then, using the left-hand side of the inequality we conclude that 
+$$
+-x+\sqrt{2\pi}(1+x^{2})e^{\frac{x^{2}}{2}}(1-\Phi(x))\geq 0.
+$$
+so the first quantity in absolute values in $(17)$ is nonnegative.
+
+Additionally, if $x>0$, we get $x+\sqrt{2\pi}(1+x^{2})e^{\frac{x^{2}}{2}}\Phi(x)>0$, so in $(17)$, the second quantity in absolute values is negative. Moreover, using standard integration by parts, we notice that
+
+\begin{equation}
+\int_{-\infty}^{w}\Phi(z)dz \eq  w\Phi(w)+\frac{1}{\sqrt{2\pi}}e^{\frac{-w^{2}}{2}}, \quad
+\end{equation}
+and 
+\begin{equation}
+\int_{w}^{\infty}(1-\Phi(z))dz \eq  -w(1-\Phi(w))+\frac{1}{\sqrt{2\pi}}e^{\frac{-w^{2}}{2}}. \quad
+\end{equation}
+Finally, by substituting, we get that $(17)$ equals
+\begin{align*}
+|g^{\prime}\bigr|_{\infty} \bigl[-w+\sqrt{2\pi}(1+w^{2})e^{\frac{w^2}{2}} \bar{\Phi}(w)\bigr]\int_{-\infty}^{w}\Phi(z)dz + \bigl[w+ \sqrt{2\pi}(1+w^{2})e^{\frac{w^2}{2}}\Phi(w)\bigr] \int_{w}^{\infty} \bar{\Phi}(z)dz\eq |g^{\prime}\bigr|_{\infty}
+\end{align*}
+
+Finally, just as before, the same bound applies to the on the interval $[- \infty, 0]$ by evenness of the Gaussian distribution function. Therefore,
+$$
+|f^{\prime \prime}|_{\infty} \leq 2|g^{\prime}|_{\infty}.
+$$
+\qed
+
+\begin{lemma}
+A less constrained bound: $|f^{\prime \prime}|_{\infty} \leq 4|g^{\prime}|_{\infty}$, when $g$ is {\it Lipschitz\/}.
+\end{lemma}
+\textbf{Proof.} Recall 
+$$
+f^{\prime}(w)-wf(w)\eq g(w)-\mathbb{E}g(Z),
+$$
+and
+\begin{equation}
+f^{\prime \prime}(w)-wf^{\prime}(w)\eq g^{\prime}(w) + f(w).
+\end{equation}
+Let $h(w)\eq g^{\prime}(w)+f(w)$, then we have $\mathbb{E}h(Z)\eq \mathbb{E}[g^{\prime}(Z)+f(Z)]$. Since $Z\sim N(0,1)$, and $f^{\prime}$ is also absolutely continuous, then by Stein's Identity we have
+$$
+\mathbb{E}f^{\prime \prime}(Z)\eq \mathbb{E}Zf^{\prime}(Z).
+$$
+Hence,
+$$
+\mathbb{E}h(Z)\eq \mathbb{E}[g^{\prime}(Z)+f(Z)]\eq \mathbb{E}[f^{\prime \prime}(Z)-Zf^{\prime}(Z)] \eq 0,
+$$
+and $(20)$ can be rewritten as 
+\begin{equation}
+f^{\prime \prime}(w)-wf^{\prime}(w)\eq h(w)+\mathbb{E}[h(Z)],
+\end{equation}
+where $h:\eq  g^{\prime}+f$.
+Therefore, $f^{\prime}$ is the solution for the new Stein’s equation $(21)$, and thus also satisfies the boundary condition that we have proved before:
+\begin{align*}
+|f^{\prime \prime}|_{\infty} &\leq 2\bigl|g^{\prime}+f-\mathbb{E}[g^{\prime}(Z)+f(Z)]\bigr|_{\infty}\eq 2|g^{\prime}+f|_{\infty}\\
+&\leq 2(|g^{\prime}|_{\infty}+|f|_{\infty})\\
+&\leq 2(|g^{\prime}|_{\infty}+|g^{\prime}|_{\infty})\eq 4|g^{\prime}|_{\infty}
+\end{align*}
+This finishes the proof.
+\qed
+
+\medskip
+\noindent
+\subsection{Example-Ordinary Central Limit Theorem in the Wasserstein metric} 
+
+Let $X_{1}, X_{2}, ... ,X_{n}$ be independent random variables with $\mathbb{E}(X_{i})\eq 0$, $\mathbf{E}(X_{i}^{2})\eq 1$ and $\mathbb{E}|X_{i}^{3}|<\infty$, and let $W\eq \frac{X_{1}+X_{2}+\cdots+X_{n}}{\sqrt{n}}$. Then $W\sim N(0,1)$. \\
+\textbf{Proof.}
+
+Take any $f\in C^{1} \mbox{with} f^{\prime}$ absolutely continuous, and satisfying $|f|\leq 1,\ |f^{\prime}|\leq \sqrt{\frac{2}{\pi}},\ |f^{\prime \prime}|\leq 2$. Let $W_{i}\eq W-\frac{X_{i}}{\sqrt{n}}$, which implies that $W_{i}\bot X_{i}$ (where ``$\bot$'' denotes independence). We will show that
+$$
+\left| \e \left[ f'(W) - Wf(W) \right] \right| \to 0 \:\: \text{as} \:\: n \to 0
+$$
+
+First we split $\e Wf(W)$ into  the sum$\frac{1}{\sqrt{n}} \sum_{i=1}^{n} \e \left[ X_i f(W) \right]$
+\begin{align*}
+\mathbb{E}\bigl(X_{i}f(W)\bigr)&\eq \mathbb{E}[X_{i}(f(W)-f(W_{i}))+X_{i}f(W_{i})]\eq \mathbb{E}[X_{i}(f(W)-f(W_{i}))]\\
+&\eq  \mathbb{E}\bigl[X_{i}(f(W)-f(W_{i})-(W-W_{i})f^{\prime}(W_{i})) \bigr]+\mathbb{E}\bigl[X_{i}(W-W_{i})f^{\prime}(W_{i})  \bigr].
+\end{align*}
+We will approximate both of these terms separately. Now note that, using mean value theorem, $\forall x < y \in \mathbb{R}$, $\exists \theta_1 \in [x, y]$ such that 
+
+$$
+(x-y)f^{\prime}(\theta_1)\eq f(x) - f(y),
+$$ 
+Then, using MVT once more, $\exists \: \theta_2 \in [\theta_1, y]$
+so that 
+\begin{align*}
+(\theta_1 - y)f''(\theta_2) &\eq f'(\theta_1) - f'(y) \\
+\implies |f''(\theta_2)| &\ge \left| \frac{f'(\theta_1) - f'(y)}{x-y}\right| \eq \left| \frac{f(x) - f(y) - f'(y)(x-y)}{(x-y)^2} \right| \\
+\implies |f''|_{\infty} &\ge \left| \frac{f(x) - f(y) - f'(y)(x-y)}{(x-y)^2} \right| \forall x, y \in \mathbb{R}
+\end{align*}
+
+and now we may compute:
+$$
+|f(W)-f(W_{i})-(W-W_{i})f^{\prime}(W_{i})|\leq (W-W_{i})^{2} |f^{\prime \prime}|_{\infty},
+$$
+thus
+$$
+\mathbb{E}\bigl[X_{i}(f(W)-f(W_{i})-(W-W_{i})f^{\prime}(W_{i})) \bigr]\leq |f^{\prime \prime}|_{\infty}\cdot \mathbb{E}\Bigl|X_{i} \frac{X_{i}^{2}}{n}\Bigr|\leq \frac{2}{n} \mathbb{E}|X_{i}|^{3}.
+$$
+And next,
+$$
+\mathbb{E}\bigl[X_{i}(W-W_{i})f^{\prime}(W_{i}) \bigr]\eq \frac{1}{\sqrt{n}}\mathbb{E}[X_{i}^{2}]\cdot \mathbf{E}[f^{\prime}(W_{i})]\eq \frac{1}{\sqrt{n}} \mathbb{E}[f^{\prime}(W_{i})],
+$$
+since $W_{i}$ is independent of $X_{i}$.
+Putting both of our approximations together, we obtain
+$$
+\bigl|\mathbb{E} Wf(W)-\frac{1}{n} \sum
+_{i\eq 1}^{n} \mathbb{E}[f^{\prime}(W_{i})] \bigr|\leq \frac{2}{n^{\frac{3}{2}}} \sum_{i\eq 1}^{n} \mathbb{E}|X_i|^{3}.
+$$
+Finally, note that 
+\begin{align*}
+\bigl|\frac{1}{n} \sum_{i\eq 1}^{n} \mathbb{E}[f^{\prime}(W_{i})] - \mathbb{E}[f^{\prime}(W)]  \bigr| &\leq \frac{|f^{\prime \prime}|_{\infty}}{n} \sum_{i\eq 1}^{n} \mathbb{E}|W-W_{i}|\\
+&\leq \frac{2}{n^{\frac{3}{2}}} \sum_{i\eq 1}^{n} \mathbb{E}|X_{i}|.\\
+\end{align*}
+Combining these results and using the triangle inequality, we obtain that
+$$
+\bigl|\mathbb{E}[f^{\prime}(W)-Wf(W)] \bigr|\leq \frac{2}{n^{\frac{3}{2}}} \sum_{i\eq 1}^{n} \mathbb{E}|X_i|^{3} + \frac{2}{n^{\frac{3}{2}}} \sum_{i\eq 1}^{n} \mathbb{E}|X_{i}|.
+$$
+Since $\mathbb{E}(X_{i}^{2})\eq 1$, we can say that $\mathbb{E}|X_{i}|^{3}\geq 1 $, and $\mathbb{E}|X_{i}|\leq \bigl(\mathbb{E}|X_{i}|^{3} \bigr)^{\frac{1}{3}}\leq \mathbb{E}|X_{i}|^{3}$.
+Therefore,
+$$
+\bigl|\mathbb{E}[f^{\prime}(W)-Wf(W)] \bigr| \leq \frac{4}{n^{\frac{3}{2}}} \sum_{i\eq 1}^{n} \mathbb{E}|X_i|^{3}
+$$
+
+So in particular, by Stein's method,
+
+$$
+\mathrm{Wass}(W, Z) \leq \frac{4}{n^{\frac{3}{2}}} \sum_{i\eq 1}^{n} \mathbb{E}|X_i|^{3}
+$$
+
+which converges to $0$, since $\mathbf{E}|X_i|^{3}< \infty$. Finally, we can conclude that $W$ converges to $N(0,1)$.
+\qed
+
+\section{Appication of Stein's method}
+
+Based on the idea from Stein's method, we know that if we can figure out that Wasserstein distance between random variables $W$ and $Z$ approximates 0, where $Z$ is standard Gaussian, then we can conclude that $W$ approximately follows standard normal distribution. Unlike the proof of ordinary central limit theorem in the Wasserstein metric, it not quite easy to compute the upper bound of $\mathrm{Wass}(W,Z)$ directly in most cases. In this section, we will introduce some useful techniques that are mostly used to obtain the upper bound of Wasserstein distance $\mathrm{Wass}(W,Z)$, including dependency graph and the method of exchangeable pairs.
+
+\subsection{Dependency Graph}
+
+We firstly will introduce the definitions of dependency graph and dependency neighborhoods.
+
+\pagebreak
+\begin{definition}
+$\{X_{i} \}_{i\in V}$ are random variables. A {\it dependency graph\/} for $\{X_{i} \}_{i\in V}$ is any graph $G$ with vertex set $V$ such that if $S,T$ are two disjoint subsets of $V$ so that there is no edge of $G$ between any vertex in $S$ to any vertex in $T$, then $\{X_{i} \}_{i\in S}$ and $\{X_{i} \}_{i\in T}$ are mutually independent. 
+\end{definition}
+
+In particular, any two variables which are not independent must be neighbors in $G$. Here, by a neighbor of a vertex $X$, we mean a vertex $Y$ of $G$ such that $Y, X$ are connected by an edge. Similarly, the neighbourhood of a vertex $X$ is the set of all neighbours $Y$ of $X$.
+
+Notice however, that we do not require the converse of this statement. In other words, if two vertices in $G$ are neighbours, then we may not conclude that they are dependent. We will call this neighbourhood the standard neighbourhood to differentiate it from the following concept.
+
+\begin{definition}
+\textbf{(Dependency neighborhoods)} We say that a collection of random variables $\{X_{1},\ X_{2}, \\
+\cdots,\ X_{n} \}$ has dependency neighborhoods $N_{i}\subseteq \{1,\ \cdots, \ n \},\ i\eq 1,\cdots, n$, if for all $i$, $X_{i}$ is independent of $\{X_{j} \}_{j\notin N_{i}}$.
+\end{definition}
+
+\begin{lemma}
+Given a graph $G$, let $D\eq 1+\mbox{maximum degree}$ \footnote{In graph theory, the degree of a vertex of a graph is the number of edges incident to the vertex, with loops (edges which have the same vertex as both of its endpoints) counted twice.}$\mbox{of}\ G$. Let $W\eq \sum_{i\in V}^{n}X_{i}$, then 
+\begin{equation}
+\mathrm{Var}(W)\leq D\sum_{i\in V} \mathrm{Var}(X_{i}).
+\end{equation}
+\end{lemma}
+\textbf{Proof.} $Var(W)$ can be expressed as the following:
+$$
+\mathrm{Var}(W)\eq \mathrm{Var}(\sum_{i\in V}^{n}X_{i})\eq \sum_{i,j}[\mathbb{E}(X_{i}X_{j})-\mathbb{E}(X_{i}) \mathbb{E}(X_{j})].
+$$
+We denote the neighborhood of $i$ by $N_{i}$, and when $j\in N_{i}$, we say $j\sim i$.\\
+WLOG, we assume that $\mathbb{E}(X_{i})\eq 0$, then
+$$
+\mathrm{Var}(W)\eq \sum_{i,j} \mathbb{E}(X_{i}X_{j})\eq \sum_{i,j\sim i}\mathbb{E}(X_{i}X_{j}).
+$$
+This is because whenever $j \not \sim i$, $X_i$ and $X_j$ are independent, so we may express the expectation of their product as the product of their expectations, which are zero.
+
+Now note that $X_{i}X_{j}\leq \frac{X_{i}^{2}+X_{j}^{2}}{2}$ by the arithmetic mean - geometric mean inequality, thus $\mathrm{Var}(W)$ satisfies the following inequality
+\begin{align*}
+\mathrm{Var}(W)&\leq \sum_{i,j\sim i} \mathbb{E}(\frac{X_{i}^{2}+X_{j}^{2}}{2})\\ 
+&\leq  \sum_{i,j\sim i} \frac{\mathrm{Var}(X_{i})+\mathrm{Var}(X_{j})}{2}\\
+&\leq D\sum_{i\in V} \mathrm{Var}(X_{i}),
+\end{align*}
+This finishes the proof.
+\qed 
+
+\subsubsection{Application of Dependency Graph}
+In this section, we will introduce an example about how to use \textbf{Lemma 9} to compute the upper bound of Wasserstein distance using Stein's method. This example also illustrates that a sum of locally dependent random variables will be approximately normal.
+\\
+
+\noindent
+\textbf{Example}
+Suppose that $\mathbb{E}(X_{i})\eq 0,\ \mathrm{Var}(\sum_{i}X_{i})\eq \sigma ^{2},\ W\eq \frac{\sum_{i}X_{i}}{\sigma}$ and $Z\sim N(0,1)$, and then we have
+$$
+Wass(W,Z)\leq \frac{2}{\sigma ^{2} \sqrt{\pi}} \sqrt{D^{3}\sum_{i} \mathbb{E}|X_{i}|^{4}} + \frac{D^{3}}{\sigma^{3}} \sum_{i} \mathbb{E}|X_{i}|^{3}.
+$$
+\textbf{Proof.} Let $W_{i}\eq \frac{1}{\sigma} \sum_{j\notin N_{i}} X_{j}$. Obviously, $W_{i}$ is independent of $X_{i}$, and $W-W_{i}\eq \frac{1}{\sigma} \sum_{j\in N_{i}} X_{j}$. Take any $f$ such that $|f|\leq 1, \ |f^{\prime}|\leq \sqrt{\frac{2}{\pi}},\ |f^{\prime \prime}|_{\infty}\leq 2$. \\
+Let's first look at $\mathbb{E}[Wf(W)]$. By assumption, $\mathbb{E}(X_{i})\eq 0$, and thus we have
+\begin{align*}
+\mathbb{E}[Wf(W)]&\eq \frac{1}{\sigma} \sum_{i} \mathbb{E}[X_{i}f(W)]\\
+&\eq \frac{1}{\sigma} \sum_{i} \mathbb{E}[X_{i}f(W)]-\frac{1}{\sigma} \sum_{i} \mathbb{E}[X_{i}f(W_{i})]\\
+&\eq \frac{1}{\sigma} \sum_{i} \mathbb{E}\bigl[\bigl(X_{i}(f(W)-f(W_{i})\bigr)\bigr]\\
+&\eq (I)\ +\ (II),
+\end{align*}
+where $(I)\eq \frac{1}{\sigma} \sum_{i} \mathbb{E}[X_{i}(f(W)-f(W_{i})-(W-W_{i})f^{\prime}(W))]$ and $(II)\eq \frac{1}{\sigma} \sum_{i} \mathbb{E}[X_{i}(W-W_{i})f^{\prime}(W)]$.\\
+Note that $W-W_{i}\eq \frac{1}{\sigma} \sum_{j\in N_{i}}X_{j}$. As a result of Taylor expansion and conditions satisfies by $f$, we may see that
+\begin{align*}
+(I)&\leq \frac{1}{\sigma}\sum_{i} \mathbb{E}\bigr|X_{i}(W-W_{i})^{2} \bigr| \cdot \biggr| \frac{f^{\prime \prime}}{2}  \biggr|_{\infty}\\
+&\leq \frac{1}{2\sigma}|f^{\prime \prime}|_{\infty} \sum_{i} \mathbf{E}\bigl|X_{i}(W-W_{i})^{2} \bigr|\\
+&\leq \frac{1}{\sigma ^{3}} \sum_{i} \mathbb{E}|X_{i}(\sum_{j\in N_{i}} X_j)^{2}|.
+\end{align*}
+Next, Plugging in $W-W_{i}\eq \frac{1}{\sigma} \sum_{j\in N_{i}} X_{j}$ to equation $(II)$, we have
+\begin{align*}
+(II)&\eq \frac{1}{\sigma} \sum_{i} \mathbb{E}\bigl[X_{i}(W-W_{i})f^{\prime}(W)\bigr]\\
+&\eq \frac{1}{\sigma} \sum \mathbb{E}[X_{i}(\frac{1}{\sigma} \sum_{j\in N{i}}X_{j})f^{\prime}(W)]\\
+&\eq \mathbb{E}\bigl[f^{\prime}(W) \bigl(\frac{1}{\sigma ^{2}} \sum X_{i} (\sum_{j\in N_{i}}X_{j})\bigr)\bigr].
+\end{align*}
+Let $T\eq \frac{1}{\sigma ^{2}} \sum X_{i} (\sum_{j\in N_{i}}X_{j})$, then the expectation of $T$ satisfies
+\begin{align*}
+\mathbb{E}(T)&\eq \frac{1}{\sigma^{2}} \sum \mathbb{E}[X_{i}\cdot \sigma(W-W_{i})]\\
+&\eq \frac{1}{\sigma} \sum \mathbb{E}[X_{i}W]\eq \frac{1}{\sigma} \mathbb{E}[W\sum_{i}X_{i}]\\
+&\eq \mathbb{E}(W^{2})\eq 1.
+\end{align*}
+Next, we can bound the absolute value of $(II)-f^{\prime}(W)$ by
+\begin{align*}
+|(II)-f^{\prime}(W)|&\eq \bigl|\mathbb{E}[f^{\prime}(W)(T-1)]\bigr|\\
+&\leq |f^{\prime}|_{\infty}\cdot \mathbb{E}|T-1|\eq \sqrt{\frac{2}{\pi}} \sqrt{\mathbb{E}|T-1|\cdot \mathbb{E}|T-1|}\\
+&\leq \sqrt{\frac{2}{\pi}} \sqrt{\mathbb{E}(T-1)^{2}} \eq \sqrt{\frac{2}{\pi}} \sqrt{\mathrm{Var}(T)}, 
+\end{align*}
+Note that $|\mathbb{E}Wf(W)-\mathbb{E}f^{\prime}(W)|\leq (I)+|(II)-f^{\prime}(W)|$. Combining the above results, we can obtain that
+\begin{align*}
+|\mathbb{E}Wf(W)-\mathbb{E}f^{\prime}(W)| \leq \sqrt{\frac{2}{\pi}} \sqrt{\mathrm{Var}(T)} + \frac{1}{\sigma ^{3}} \sum \mathbb{E}\bigl|X_{i}(\sum_{j\in N_{i}} X_{j})^{2} \bigr|
+\end{align*}
+and $\frac{1}{\sigma ^{3}} \sum \mathbb{E}\bigl|X_{i}(\sum_{j\in N_{i}} X_{j})^{2} \bigr|$ can be bounded by
+\begin{align*}
+\frac{1}{\sigma ^{3}} \sum \mathbb{E}|X_{i}(\sum_{j\in N_{i}} X_{j})^{2}|&\leq \frac{1}{\sigma ^{3}} \sum_{i} \sum_{j,k\in N_{i}} \mathbb{E}|X_{i}X_{j}X_{k}|\\
+&\leq \frac{1}{3\sigma ^{3}} \sum_{i} \sum_{j,k\in N_{i}} (\mathbb{E}|X_{i}|^{3}+\mathbb{E}|X_{j}|^{3}+\mathbb{E}|X_{k}|^{3})\\
+&\leq \frac{D^{2}}{\sigma ^{3}} \sum_{i} \mathbb{E}|X_{i}|^{3},
+\end{align*}
+where the last two inequalities come from the fact that each variable $X_i$'s expectation is summed once for each neighbor of $X_i$, so at most $D$ times. As well as the AM-GM inequality: $\frac{X_{1}+\cdots+X_{n}}{n}\geq \sqrt[n]{X_{1}X_{2}\cdots X_{n}}$.
+
+\noindent
+To get the upper bound of $\mathrm{Var}(T)$, let's first compute the upper bound of $\mathrm{Var}(\sum X_{i}(\sum_{j\in N_{i}}X_{j}))$.
+$$
+\mathrm{Var}(\sum X_{i}(\sum_{j\in N_{i}}X_{j}))\eq \mathrm{Var}(\sum_{i,j\in N_{i}}X_{i}X_{j}),
+$$
+Let us also keep track of the fact that 
+$$
+\mathrm{Var}(X_{i}X_{j})\leq \mathbb{E}(X_{i}^{2}X_{j}^{2})\leq \frac{\mathbb{E}(X_{i}^{4})+\mathbb{E}(X_{j}^{4})}{2}.
+$$
+Finally, the collection of variables $\{ X_iX_j: 1 \le i, j \le n \} $ generates a new dependency graph. Now, $X_{i}X_{j}$ is independent of $X_{k}X_{l}$ if $k,l\notin \{N_{i}\cup N_{j} \}$. Then, since $|N_{i}\cup N_{j}|\leq 2D$ and since $N_{i}, N_{j}\subseteq V$, each vertex in $N_{i}\cup N_{j}$ has at most $D$ neighbors. This implies that the new dependency graph has maximum degree at most $2D^{2}$. Now, using the result in \textbf{Lemma 9}, we obtain that
+$$
+\mathrm{Var}(\sum_{i,j\in N_{i}}X_{i}X_{j})\leq 2D^{2}\sum_{i\sim j} \mathrm{Var}(X_{i}X_{j})\leq 2D^{2}\times D\sum_{i} \mathbb{E}(X_{i}^4),
+$$
+
+\noindent
+Thus, 
+$$
+\mathrm{Var}(T)\leq \frac{1}{\sigma^{4}}\cdot 2D^{3}\sum_{i}\mathbb{E}X_{i}^{4}.
+$$
+Combining all these results together, we get
+$$
+Wass(W,Z)\leq \frac{2}{\sigma ^{2} \sqrt{\pi}} \sqrt{D^{3}\sum_{i} \mathbb{E}|X_{i}|^{4}} + \frac{D^{3}}{\sigma^{3}} \sum_{i} \mathbb{E}|X_{i}|^{3}.
+$$
+\qed
+
+Notably, if $D$ is fixed, i.e., if each variable has at most $D$ other variables which are not independent to it, then $W$ approaches normal Gaussian distribution as $n \to \infty$.
+
+\medskip
+\noindent
+
+\subsection{Method of Exchangeable Pairs}
+
+\begin{definition}
+$(W,W^{\prime})$ is an exchangeable pair of random variables if $(W,W^{\prime})$ and $(W,W^{\prime})$ have the same distribution, i.e. $(W,W^{\prime})\overset{\text{d}}{\eq }(W^{\prime},W)$.
+\end{definition}
+The following lemma gives an upper bound of the Wasserstein distance between random variables $W$ and $Z$ using the method of exchangeable pair. 
+\begin{lemma}
+Suppose $(W,W^{\prime})$ is an exchangeable pair and there is a constant $\lambda \in (0,1)$ such that
+\begin{equation}
+\mathbb{E}(W^{\prime}-W|W)\eq -\lambda W.
+\end{equation}
+Also assume that $\mathbb{E}(W^{2})\eq 1$, then we have the following inequality:
+\begin{align*}
+Wass(W,Z)&\eq \mathrm{sup}\bigl|\mathbb{E}f^{\prime}(w)-\mathbb{E}(Wf(W))\bigr|\\
+&\leq \sqrt{\frac{2}{\pi} \mathrm{Var}[\mathbb{E}(\frac{1}{2\lambda}(W^{\prime}-W)^{2}|W)]}+\frac{1}{3\lambda} \mathbb{E}|W^{\prime}-W|^{3},
+\end{align*}
+where $Z\sim N(0,1)$. 
+\end{lemma}
+Based on the definition of exchangeable pair, we have $\mathbb{E}(W)\eq \mathbb{E}(W^{\prime})$ and $\mathbb{E}(W^{2})\eq \mathbb{E}(W^{\prime 2})\eq 1$. Additionally, from equation $(23)$, we have the following conclusions: 
+\begin{itemize}
+\item[1.] $\mathbb{E}(W)\eq 0$, since
+$$
+\lambda \e W \eq \mathbb{E}(\lambda W) \eq \mathbb{E}[\mathbb{E}(W-W^{\prime}|W)]\eq \mathbb{E}(W-W^{\prime})\eq \e W - \e W' \eq  0.
+$$
+\item[2.] $\mathbb{E}(W^{\prime}-W)^{2}\eq 2 \lambda$, since
+\begin{align*}
+\mathbb{E}(W^{\prime}-W)^{2}&\eq \mathbb{E}[W^{2}+W^{\prime 2}-2WW^{\prime}]\\
+&\eq \mathbb{E}[2W^{2}-2WW^{\prime}]\\
+&\eq \mathbb{E}[2W(W-W^{\prime})]\\
+&\eq \mathbb{E}(\mathbb{E}[2W(W-W^{\prime})|W])\\
+&\eq \mathbb{E}(2W\mathbb{E}[(W-W^{\prime})|W])\\
+&\eq \mathbb{E}\bigl(2W\mathbb{E}(\lambda W)\bigr)\eq 2\lambda \mathbb{E}(W^{2})\eq 2\lambda
+\end{align*}
+\end{itemize}
+Next, we will prove \textbf{Lemma 10}.\\
+\textbf{Proof.} Take any twice differentiable function $f$ such that
+$$
+|f|\leq 1, \quad |f^{\prime}|\leq \sqrt{\frac{2}{\pi}},\quad |f^{\prime \prime}|_{\infty}\leq 2.
+$$
+Let $F^{\prime}(x)\eq f(x)$, and by Taylor expansion, we have
+\begin{equation}
+0\eq \mathbb{E}(F(W^{\prime})-F(W))\eq  \mathbb{E}[(W^{\prime}-W)f(W)]+\frac{1}{2} \mathbb{E}[(W^{\prime}-W)^{2}f^{\prime}(W)]+r,
+\end{equation}
+where $r\eq \frac{1}{6}\mathbb{E}\bigl[(W^{\prime}-W)^{3}f^{\prime \prime}(\widetilde{W})\bigr]$, $\widetilde{W}$ is between $W$ and $W^{\prime}$, and thus $|r|\leq \frac{1}{6} |f^{\prime \prime}|_{\infty}\cdot \mathbb{E}|W^{\prime}-W|^{3}\leq \frac{1}{3} \mathbb{E}|W^{\prime}-W|^{3}$.
+Since there exists $\lambda \in (0,1)$ such that 
+$$
+\mathbb{E}(W^{\prime}-W|W)\eq -\lambda W,
+$$
+multiplying both sides by $f(W)$ and taking expectation, then we have
+$$
+\mathbb{E}\bigl[(W^{\prime}-W)f(W)\bigr]\eq -\lambda \mathbb{E}[Wf(W)].
+$$
+Based on the relationship implied by equation $(25)$, we proceed by saying that
+\begin{align*}
+-\lambda \mathbb{E}[Wf(W)]&\eq \mathbb{E}\bigl[(W^{\prime}-W)f(W)\bigr]\\
+&\eq -\frac{1}{2} \mathbb{E}\bigl[(W^{\prime}-W)^{2}f^{\prime}(W)\bigr]-r\\
+&\eq -\mathbb{E}\bigl[\frac{1}{2} \mathbb{E}((W^{\prime}-W)^{2}f^{\prime}(W)|W)\bigr]-r\\
+&\eq -\mathbb{E}\bigl[\frac{1}{2} f^{\prime}(W) \mathbb{E}((W^{\prime}-W)^{2}|W)\bigr]-r.
+\end{align*}
+Next we can bound $\mathbb{E}\bigl[f^{\prime}(W)-Wf(W)\bigr]$ using the above computations,
+\begin{align*}
+|\mathbb{E}f^{\prime}(W)-\mathbb{E}[Wf(W)]|&\leq |\mathbb{E}[f^{\prime}(W)(\mathbb{E}(\frac{1}{2\lambda}(W^{\prime}-W)^{2}|W)-1)]|+\frac{1}{3\lambda} \mathbb{E}|W^{\prime}-W|^{3}\\
+&\leq \sqrt{\frac{2}{\pi}} \mathbb{E}|\mathbb{E}(\frac{1}{2\lambda}(W^{\prime}-W)^{2}|W)-1| +\frac{1}{3\lambda} \mathbb{E}|W^{\prime}-W|^{3}.
+\end{align*}
+Let $Y\eq \mathbb{E}(\frac{1}{2\lambda}(W^{\prime}-W)^{2}|W)]$, then we have $\mathbb{E}(Y)\eq 1$, and 
+$$
+\mathbb{E}\bigl[Y- \mathbb{E}(Y)\bigr]\eq \sqrt{\mathbb{E}^{2}\bigl[Y- \mathbb{E}(Y)\bigr]}\leq \sqrt{\mathbb{E}\bigl[ (Y- \mathbb{E}(Y))^{2}}\bigr]\eq \sqrt{\mathrm{Var}(Y)},
+$$
+where the last inequality comes from Jensen's inequality.
+Therefore,
+$$
+Wass(W,Z)\leq \sqrt{\frac{2}{\pi} \mathrm{Var}[\mathbb{E}(\frac{1}{2\lambda}(W-W^{\prime})^{2}|W)]}+\frac{1}{3\lambda} \mathbb{E}|W^{\prime}-W|^{3}.
+$$
+\qed
+
+\medskip
+\noindent
+\textbf{Remark}: this inequality also holds if $W$ and $W^{\prime}$ have the same distribution, but not necessarily exchangeable.
+
+
+\subsubsection{Construction of an Exchangeable Pair}
+
+The general idea for the construction of an exchangeable pairs to take the sum of a finite collection of random variables. Then, from this sum, we choose one of the summands uniformly at random, and replace it with an independent copy of a variable with identical distribution to the original summand. Our claim is that these two sums will be exchangeble pairs. Formally, let $X_{1}^{\prime}, X_{2}^{\prime}, \cdots, X_{n}^{\prime}$ be an independent copy of $X_{1}, X_{2}, \cdots, X_{n}$, and choose index $I$ uniformly at random from $\{1,2,\cdots,n\}$. i.e. $(X_{1}^{\prime}, X_{2}^{\prime}, \cdots, X_{n}^{\prime})$ is independent of $(X_{1}, X_{2}, \cdots, X_{n})$.\\
+
+\pagebreak
+\textbf{Example}
+
+\noindent
+$X_{1}, X_{2}, \cdots, X_{n}$ is a sequence of random variables, let\ $W\eq \sum_{i}^{n} X_{i}$ and 
+$$
+W^{\prime}\eq  \sum_{j\neq I}^{n} X_{j} + X_{I}^{\prime}\eq W+X_{I}^{\prime}-X_{I}, 
+$$ 
+then $(W,W^{\prime})$ is an exchangeable pair.\\
+\textbf{Proof.} In order to prove that $(W,W^{\prime})\overset{\text{d}}{\eq }(W^{\prime},W)$, we need to show that for all measurable sets $A, B$
+$$
+\textbf{P}(W\in A,\ W^{\prime}\in B)\eq \textbf{P}(W^{\prime}\in A, W\in B).
+$$
+Let\ $S_{-i}\eq X_{1}+\cdots+X_{i-1}+X_{i+1}+\cdots+X_{n}$. Since $\textbf{P}(I\eq i)\eq \frac{1}{n}$, we have
+$$
+\textbf{P}(W\in A,\ W^{\prime}\in B)\eq \frac{1}{n} \sum_{i\eq 1}^{n} \textbf{P}(W\in A, W_{i}^{\prime}\in B). 
+$$
+Where $W_i' = \sum_{j = 1}^{n} X_j - X_i + X_i'$.
+Since $X_{i}^{\prime}$ is an independent copy of $X_{i}$, we have
+$X_{i}^{\prime}\perp X_{i},\ X_{i}^{\prime}\perp S_{-i},\ X_{i}\perp S_{-i}$, where ``$\perp$'' denotes independence, and then we can conclude that $(S_{-i},\ X_{i},\ X_{i}^{\prime}) \overset{\text{d}}{\eq }(S_{-i},\ X_{i}^{\prime},\ X_{i})$.
+
+\noindent
+Note that $W\eq S_{-i}+X_{i}$, $W^{\prime}\eq S_{-i}+X_{i}^{\prime}$, thus we obtain that
+\begin{align*}
+\frac{1}{n} \sum_{i\eq 1}^{n} \textbf{P}(W\in A, W_{i}^{\prime}\in B)&\eq \frac{1}{n} \sum_{i\eq 1}^{n} \textbf{P}(W_{i}^{\prime}\in A, W\in B)\\
+&\eq \textbf{P}(W^{\prime}\in A, W\in B).
+\end{align*}
+Therefore, $W$ and $W^{\prime}$ is an exchangeable pair.
+\qed
+
+\medskip
+\noindent
+
+\subsubsection{Application of exchangeable pairs in proving Central Limit Theorem}
+In this part, we will prove the Ordinary Central Limit Theorem for weighted sum of independent random variables. This is a much stronger result than our traditional central limit theorem, as now we may take random variables with any distribution. In many applications, identical distributions are too much to ask for. However, it is still common to deal with variables which are independent of one another, and hence the value of the following result.
+
+\paragraph{Weighted sum of independent random variables} 
+
+Let $X_{1}, X_{2}, \cdots, X_{n}$ be independent random variables with mean 0, variance 1 and $\mathbb{E}|X_{i}|^{4}\leq \infty$.\\
+Let 
+$$
+W\eq \frac{1}{\sqrt{n}} \sum_{i\eq 1}^{n} X_{i}
+$$
+then $W$ approximately follows standard Gaussian distribution.
+
+\noindent
+\textbf{Proof.} Let $X_{1}^{\prime}, X_{2}^{\prime}, \cdots, X_{n}^{\prime}$ be the independent copy of $X_{1}, X_{2}, \cdots, X_{n}$, and choose index $I$ uniformly and randomly from $\{1,2,\cdots,n\}$. In addition, $X_{i}^{\prime}$ is independent of $X_{i}$, and $X_{i}$, $X_{i}^{\prime}$ have the same distribution. 
+
+Since $(W, W^{\prime})$ is an exchangeable pair, then we need to check  if there exists $\lambda \in (0,1)$ such that
+$$
+\mathbb{E}(W^{\prime}-W|W)\eq -\lambda W.
+$$
+Let $W^{\prime}\eq \frac{1}{\sqrt{n}} \sum_{j\neq I}^{n} X_{j}+\frac{X_{I}^{\prime}} {\sqrt{n}}\eq W+\frac{X_{I}^{\prime}-X_{I}}{\sqrt{n}}$, then we have $W^{\prime}-W\eq \frac{X_{I}^{\prime}-X_{I}}{\sqrt{n}}$, and we can compute $\mathbb{E}(W^{\prime}-W|W)$ as follows
+\begin{align*}
+\mathbb{E}(W^{\prime}-W|W)&\eq \frac{1}{\sqrt{n}} \mathbb{E}(X_{I}^{\prime}-X_{I}|W)\\
+&\eq \frac{1}{\sqrt{n}}\times \frac{1}{n} \sum_{i\eq 1}^{n} \mathbb{E}(X_{i}^{\prime}-X_{i}|W)\\
+&\eq \frac{1}{n} \mathbb{E}(\sum_{i\eq 1}^{n} \frac{1}{\sqrt{n}} (X_{i}^{\prime}-X_{i}|W))\\
+&\eq \frac{1}{n} \mathbb{E}(\sum_{i\eq 1}^{n} \frac{1}{\sqrt{n}} X_{i}^{\prime})-\frac{1}{n} \mathbb{E}(W|W)\eq -\frac{1}{n} W.
+\end{align*}
+Where our last equality stems from the fact that each $X_i'$ is independent of all $X_j$, and therefore is independent of $\frac{1}{\sqrt n} \sum_i X_i \eq W$. Hence, in our example, $\lambda \eq  \frac{1}{n}$, and we have by Lemma 10 that
+$$
+Wass(W,Z)\leq \sqrt{\frac{2}{\pi} \mathrm{Var}[\mathbb{E}(\frac{1}{2\lambda}(W-W^{\prime})^{2}|W)]}+\frac{1}{3\lambda} \mathbb{E}|W-W^{\prime}|^{3}.
+$$
+Let's first compute the upper bound of $\frac{1}{3\lambda} \mathbf{E}|W-W^{\prime}|^{3}$. By replacing $W^{\prime}-W$ by $ \frac{X_{I}^{\prime}-X_{I}}{\sqrt{n}}$, we have
+\begin{align*}
+\frac{1}{3\lambda} \mathbb{E}|W-W^{\prime}|^{3}&\eq \frac{n}{3} \mathbb{E} \biggr| \frac{X_{I}^{\prime}-X_{I}}{\sqrt{n}} \biggr|^{3}\\
+&\eq \frac{n}{3n^{\frac{3}{2}}} \mathbb{E}|X_{I}^{\prime}-X_{I}|^{3}\eq \frac{1}{3n^{\frac{3}{2}}} \sum_{i\eq 1}^{n} \mathbb{E}|X_{i}^{\prime}-X_{i}|^{3}\\
+&\leq \frac{8}{3n^{\frac{3}{2}}} \sum_{i\eq 1}^{n} \mathbb{E}|X_{i}|^{3}
+\end{align*}
+Next we wiil compute the upper bound of $\mathrm{Var}[\mathbb{E}(\frac{1}{2\lambda}(W-W^{\prime})^{2}|W)]$. Since 
+$$
+\mathbb{E}(\frac{1}{2\lambda}(W-W^{\prime})^{2}|W)\eq \frac{1}{2} \mathbb{E}[(X_{I}^{\prime}-X_{I})^{2}|W]\eq \frac{1}{2n}[\sum_{i}^{n} \mathbb{E}(X_{i}^{\prime}-X_{i})^{2}|W], 
+$$
+where $\mathbb{E}(X_{i}^{\prime}-X_{i})^{2}|W]$ can be expressed as follows 
+\begin{align*}
+\mathbb{E}[(X_{i}^{\prime}-X_{i})^{2}|W]&\eq \mathbb{E}(X_{i}^{\prime 2}|W)+\mathbb{E}(X_{i}^{2}|W)+2\mathbb{E}(X_{i}^{\prime}X_{i}|W)\\
+&\eq 1+\mathbb{E}(X_{i}^{2}|W)+0\\
+&\eq 1+\mathbb{E}(X_{i}^{2}|W),
+\end{align*}
+thus we obtain that 
+\begin{align*}
+\mathrm{Var}[\mathbb{E}(\frac{1}{2\lambda}(W-W^{\prime})^{2}|W)]&\eq \mathrm{Var}[\frac{1}{2n}\sum_{i\eq 1}^{n} (1+\mathbb{E}(X_{i}^{2}|W))]\\
+&\eq \mathrm{Var}[\frac{1}{2n} \sum_{i\eq 1}^{n} \mathbb{E}(X_{i}^{2}|W)].
+\end{align*}
+However, $\mathrm{Var}[\frac{1}{2n} \sum_{i\eq 1}^{n} \mathbb{E}(X_{i}^{2}|W)]$ is not easy to compute. Thus we need the following property to compute the upper bound of $\mathrm{Var}[\mathbb{E}(\frac{1}{2\lambda}(W-W^{\prime})^{2}|W)]$.
+
+\noindent
+\textbf{{\it Remark\/}}
+$$
+\mathrm{Var}\bigl(\mathbb{E}(\frac{1}{2\lambda}(W-W^{\prime})^{2}|W)\bigr)\leq \mathrm{Var}\bigl(\mathbb{E}(\frac{1}{2\lambda}(W-W^{\prime})^{2}|\mathcal{F})\bigr)
+$$
+for any $\sigma$-field $\mathcal{F}$ that is larger than the $\sigma$-field generated by $W$. Thus we can compute the upper bound of $\mathrm{Var}(\mathbb{E}(\frac{1}{2\lambda}(W-W^{\prime})^{2}|\mathcal{F}))$ instead. Let's first prove why this inequality holds.
+\begin{itemize}
+\item[] \textbf{Proof.} Recall that $\mathrm{Var}(X)\eq \mathbb{E}(X^{2})-\mathbb{E}^{2}(X)$, thus we have
+\begin{align*}
+\mathrm{Var}(\mathbb{E}((W-W^{\prime})^{2}|W))&\eq \mathbb{E}\{\mathbb{E}[(W-W^{\prime})^{2}|W]\}^{2}-\mathbb{E}^{2}(\mathbb{E}[(W-W^{\prime})^{2}|W]) \\
+&\eq \mathbb{E}\{\mathbb{E}[(W-W^{\prime})^{2}|W]\}^{2}-\mathbb{E}^{2}[(W-W^{\prime})^{2}]\\
+\mathrm{Var}(\mathbb{E}((W-W^{\prime})^{2}|\mathcal{F}))&\eq \mathbb{E}\{\mathbb{E}[(W-W^{\prime})^{2}|\mathcal{F}]\}^{2}-\mathbb{E}^{2}[(W-W^{\prime})^{2}]
+\end{align*}
+Hence, we only need to compare $\mathbb{E}\{\mathbb{E}[(W-W^{\prime})^{2}|W]\}^{2}$ and $\mathbb{E}\{\mathbb{E}[(W-W^{\prime})^{2}|\mathcal{F}]\}^{2}$ to get the relationship between $\mathrm{Var}(\mathbb{E}((W-W^{\prime})^{2}|W))$ and $\mathrm{Var}(\mathbb{E}((W-W^{\prime})^{2}|\mathcal{F}))$.
+Let $X\eq (W-W^{\prime})^{2}$, then we will compare $\mathbb{E}[\mathbb{E}(X|W)]^{2}$ and $\mathbb{E}[\mathbb{E}(X|\mathcal{F})]^{2}$.\\
+Take $W\eq \sum_{i\eq 1}^{n}X_{i}$ and $\mathcal{F}\eq (X_{1}, \cdots, X_{n})$, then we have
+\begin{displaymath}
+\mathbb{E}(X|W)\eq \mathbb{E}(X|\mathcal{F})\eq \mathbb{E}[\mathbb{E}(X|\mathcal{F})|W],
+\end{displaymath}
+because of the fact that $\sigma (W)\subseteq \mathcal{F}$, $W$ contains less information than $\mathcal{F}$, and $\mathcal{F}$ includes more randomness. Thus,
+$$
+\mathbb{E}[\mathbb{E}(X|W)]^{2}\eq \mathbb{E}[\mathbb{E}(\mathbb{E}(X|\mathcal{F})|W)]^{2}.
+$$
+Let $Y\eq \mathbb{E}(X|\mathcal{F})$, $\mathbb{E}^{2}(Y|W)\leq \mathbb{E}[Y^{2}|W]$, which comes from Jensen's inequality, and then we continue as follows
+$$
+\mathbb{E}[\mathbb{E}(X|W)]^{2}\leq \mathbb{E}[\mathbb{E}(Y^{2}|W)]\eq \mathbb{E}(Y^{2})\eq \mathbb{E}[\mathbb{E}(X|\mathcal{F})]^{2}.
+$$
+Therefore,
+$$
+\mathrm{Var}(\mathbb{E}(\frac{1}{2\lambda}(W-W^{\prime})^{2}|W))\leq \mathrm{Var}(\mathbb{E}(\frac{1}{2\lambda}(W-W^{\prime})^{2}|\mathcal{F}))
+$$
+\qed
+\end{itemize}
+Given the property mentioned above, then we can compute the upper bound of the variance as follows
+\begin{align*}
+\mathrm{Var}[\mathbb{E}(\frac{1}{2\lambda}(W-W^{\prime})^{2}|W)]&\eq \mathrm{Var}[\frac{1}{2n} \sum_{i\eq 1}^{n} \mathbb{E}(X_{i}^{2}|W)]\\
+&\leq \mathrm{Var}[\frac{1}{2n} \sum_{i\eq 1}^{n} \mathbb{E}(X_{i}^{2}|(X_{1}, \cdots, X_{n}))]\\
+&\eq \mathrm{Var}[\frac{1}{2n} \sum_{i\eq 1}^{n} \mathbb{E}(X_{i}^{2}|X_{i})]\\
+&\eq \frac{1}{4n^{2}} \sum_{i\eq 1}^{n} \mathrm{Var}(X_{i}^{2})\eq \frac{1}{4n^{2}} \sum_{i\eq 1}^{n} [\mathbb{E}(X_{i}^{4})-\mathbb{E}^{2}(X_{i}^{2})]\\
+&\leq \frac{1}{4n^{2}} \sum_{i\eq 1}^{n} \mathbb{E}(X_{i}^{4})
+\end{align*}
+Therefore, if $\mathbb{E}(X_{i}^{4})<\infty$,
+$$
+Wass(W,Z)\leq \sqrt{\frac{1}{2n^{2}\pi} \sum_{i\eq 1}^{n} \mathbb{E}(X_{i}^{4}})+\frac{8}{3n^{\frac{3}{2}}} \mathbb{E}|X_{i}|^{3} \ \rightarrow \ 0,\ \mbox{as}\ n\ \rightarrow \ \infty\, 
+$$
+and $W \overset{\cdot}{\sim} N(0,1)$.
+\qed 
+
+
+\newpage
+
+
+\begin{thebibliography}{99}
+
+\bibitem{YourLabel} Louis H.Y. Chen, Larry Goldstein and Qi-Man Shao: {\em Normal Approximation by Stein's Method } (2011).
+\bibitem{YourLabel} David Rosenberg: {\em Stein’s method and applications } (2007).
+\bibitem{YourLabel} Nathan Ross: {\em Fundamentals of Stein’s method } (2011).
+\bibitem{subhankar} Subhankar Ghosh and Larry Goldstein: {\em Concentration of measure for the number of isolated vertices in the
+Erd\"os-R\'enyi random graph by size bias couplings}.
+\bibitem{YourLabel} R.D. Gordon: {\em Values of Mill's ratio of area to bounding ordinate of the normal probability integral for large values of the argument}. Annals of Mathematical Statistics, Vol 12 (1941), pp 364-366.
+\end{thebibliography}
+
+
+
+
+
+
+
+
+
+
+\end{document}
